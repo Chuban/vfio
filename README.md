@@ -75,7 +75,7 @@ wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-d
   1. Boot the host into Windows.
   2. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
   3. [Download and install a HEX editor](https://github.com/bwrsandman/Bless).
-  3. Open GPU-Z and backup the GPU BIOS. Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created. [There is also a way of doing it in Linux]() but it did not work for me.
+  3. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created. [There is also a way of doing it in Linux]() but it did not work for me.
   4. Open the ROM (`GK104.rom`) in the HEX editor.
   5. After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`, and save. I strongly recommend not to overwrite the original ROM.
 
