@@ -1,7 +1,7 @@
 # Single GPU passthrough with QEMU and VFIO
 <!-- AKA Passthrough VGA on first slot -->
 
-![Windows 10 1709][windows 10 screenshot]*Windows 10 1709*
+![Windows 10 1709](/Screenshots/Windows 10 QEMU single GPU info.png)*Windows 10 1709*
 
 ## ToC
 1. [What this does](#what-this-does)
