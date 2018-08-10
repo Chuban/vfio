@@ -79,12 +79,6 @@ wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-d
   4. Open the ROM (`GK104.rom`) in the HEX editor.
   5. After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`, and save. I strongly recommend not to overwrite the original ROM.
 
-<!--
-And you must supply QEMU with the Full GPU's ROM extracted extracted using a tool called "nvagetbios" , which you can find in a package called "envytools"
--->
-
-
-<!-- \\ Mod this section, refer to guide -->
 7. Get the iommu groups needed for the VM (GPU, GPU audio and USB controller)
 ```bash
 chmod +x scripts/iommu.sh
@@ -190,6 +184,10 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 - [ ] Try to run the VM as user
 - [ ] ???
 
+<!--
+And you must supply QEMU with the Full GPU's ROM extracted extracted using a tool called "nvagetbios" , which you can find in a package called "envytools"
+-->
+
 <!-- Links -->
 [Xen Wiki]: https://wiki.xen.org/wiki/VTd_HowTo
 [IOMMU Hardware]:https://en.wikipedia.org/wiki/List_of_IOMMU-supporting_hardware
@@ -198,5 +196,3 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 [kvm-archwiki]: https://wiki.archlinux.org/index.php/KVM
 [pci_passthrough-archwiki]: https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF
 [libvirt_archwiki]: https://wiki.archlinux.org/index.php/Libvirt
-[windows 10 screenshot]: /Screenshots/Windows 10 QEMU single GPU info.png
-[macos screenshot]: /Screenshots/MacOS High Sierra 10.13.3 single GPU info.png
