@@ -79,8 +79,9 @@ wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-d
   4. Open the ROM (`GK104.rom`) in the HEX editor.
   5. After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`, and save. I strongly recommend not to overwrite the original ROM.
 
+<!--
 And you must supply QEMU with the Full GPU's ROM extracted extracted using a tool called "nvagetbios" , which you can find in a package called "envytools"
-
+-->
 
 
 <!-- \\ Mod this section, refer to guide -->
