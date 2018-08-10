@@ -1,6 +1,6 @@
 # Single GPU passthrough with QEMU and VFIO
 <!-- AKA Passthrough VGA on first slot -->
-----
+
 ## ToC
 1. [What this does](#what-this-does)
 2. [What you need](#what-you-need)
@@ -9,7 +9,6 @@
 5. [About peripherals](#about-peripherals)
 6. [Known problems](#known-problems)
 7. [TODO](#todo)
-
 
 ## What this does
 In one command it kills X, frees the GPU from drivers and console, detaches the GPU from the host, starts the VM with the GPU, waits until the VM is off, reattaches the GPU to the host and starts lightdm.
@@ -23,26 +22,26 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 
 ## My system
 ```
-                                                [Hardware]
-                                                 CPU: AMD Ryzen 5 2600
-                                         Motherboard: Gigabyte AB350M-Gaming 3 rev1.1
-                                    Motherboard BIOS: F23d
-                                                 RAM: 16GB
-                                                 GPU: Gigabyte Nvidia GeForce GTX 770
-                                           GPU model: GV-N770OC-2GD
-                                            GPU BIOS: 80.04.C3.00.0F
-                                        GPU codename: GK104
+              [Hardware]
+               CPU: AMD Ryzen 5 2600
+       Motherboard: Gigabyte AB350M-Gaming 3 rev1.1
+  Motherboard BIOS: F23d
+               RAM: 16GB
+               GPU: Gigabyte Nvidia GeForce GTX 770
+         GPU model: GV-N770OC-2GD
+          GPU BIOS: 80.04.C3.00.0F
+      GPU codename: GK104
 
-                                                [Software]
-                                        Linux Distro: ArchLinux
-                                        Linux Kernel: 4.17.11 vanilla
-                                       Nvidia divers: 396.45-2
-                                        QEMU version: 2.12.0-2
-                                        OVMF version: r24021
+              [Software]
+      Linux Distro: ArchLinux
+      Linux Kernel: 4.17.11 vanilla
+     Nvidia divers: 396.45-2
+      QEMU version: 2.12.0-2
+      OVMF version: r24021
 
-                                                 [Guests]
-                                             Windows: Windows 10 Pro 1709 x64
-                                               MacOS: MacOS 10.13.3
+               [Guests]
+           Windows: Windows 10 Pro 1709 x64
+             MacOS: MacOS 10.13.3
 
 ```  
 
@@ -65,14 +64,15 @@ sudo mkinitcpio -p linux
 
 4. Reboot the system to load the vfio drivers
 
-5. (Optional)[Download virtio drivers](virtio_drivers)
+5. [Optional] [Download virtio drivers](virtio_drivers)
 ```
 wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 ```
 
-6. Get the GPU BIOS [Source](GPU_BIOS_video) <!--[Why?][] -->
-  [You can download the bios.](techpowerup vgabios) If you do so, download a HEX editor and skip to step 4.
+6. Get the GPU BIOS [Source](GPU_BIOS_video)
+<!-- [Why?][] -->
 
+  [You can download the bios.](techpowerup vgabios) If you do so, download a HEX editor and skip to step 4.
   1. Boot the host into Windows.
   2. [Download and install GPU-Z](GPU-Z).
   3. [Download and install a HEX editor](bless).
@@ -89,31 +89,30 @@ And you must supply QEMU with the Full GPU's ROM extracted extracted using a too
 ```bash
 chmod +x scripts/iommu.sh
 bash scripts/iommu.sh
-----
+-------------------------
 # GPU
 IOMMU group 13
-	06:00.0 VGA compatible controller [0300]: NVIDIA Corporation GK104 [GeForce GTX 770] [10de:1184] (rev a1)
-	06:00.1 Audio device [0403]: NVIDIA Corporation GK104 HDMI Audio Controller [10de:0e0a] (rev a1)
+	  06:00.0 VGA compatible controller [0300]: NVIDIA Corporation GK104 [GeForce GTX 770] [10de:1184] (rev a1)
+	  06:00.1 Audio device [0403]: NVIDIA Corporation GK104 HDMI Audio Controller [10de:0e0a] (rev a1)
 # USB 3.0 Controller
 IOMMU group 16
-	07:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] USB 3.0 Host controller [1022:145f]
+	  07:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] USB 3.0 Host controller [1022:145f]
 # SATA Controller
 IOMMU group 18
-	08:00.2 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] [1022:7901] (rev 51)
+	  08:00.2 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] [1022:7901] (rev 51)
 ```
 
-8. (Optional) Create the image for the VM. Only if not using a physical hard drive.
+8. [Optional] Create the image for the VM. Only if not using a physical hard drive.
 ```
 qemu-img create -f raw windows.raw 60G
 ```
 
-9. Edit the script `windows-install.sh` and `windows.sh` to convenience
-Things you may have to edit:
+9. Edit the script `windows-install.sh` and `windows.sh` to convenience. Things you may have to edit:
   1. PCI devices
   2. User
-  3. Location of HDD, vBIOS and OVMF image
-  4. The Desktop Environment, Display Manager, Windows Manager, etc.
-  5. QEMU options like RAM and CPU config
+  3. Location of HDD, ISO, vBIOS and OVMF image
+  4. The Desktop Environment, Display Manager, Window Manager, etc.
+  5. QEMU options like RAM and CPU
   6. Kernel modules
 <!--
 Check the guides [IOMMU][], [other guide, may be important][]
@@ -123,8 +122,7 @@ Check the guides [IOMMU][], [other guide, may be important][]
 sudo scripts/windows-install.sh
 ```
 
-11. Install Windows
-When you are asked for a hard drive there will be none.
+11. When installing Windows, in the section `Where do you want to install Windows?` there will be no hard drives to install to; to fix it:
   1. Load driver
   2. Browse
   3. CD Drive (E:) virtio-win-0.1.1
@@ -144,11 +142,20 @@ sudo scripts/windows.sh
 ```
 
 ### For the sake of convenience
-```
+```bash
 sudo ln -s scripts/qemu@.service /usr/lib/systemd/system/
 ```
+```bash
+alias windows="sudo systemctl start qemu@windows.service"
+alias macos="sudo systemctl start qemu@macos-hs.service"
 ```
-alias fuckmicrosoft="sudo systemctl start qemu@windows.service"
+To start the Windows VM
+```
+windows
+```
+To start the MacOS VM
+```
+macos
 ```
 
 ## About peripherals
