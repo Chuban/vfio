@@ -4,7 +4,8 @@
 ## What this does
 In one command it kills X, frees the GPU from drivers and console, detaches the GPU from the host, starts the VM with the GPU, waits until the VM is off, reattaches the GPU to the host and starts lightdm.
 
-## ToC (Table of Contents)
+## ToC
+[[_TOC_]]
 
 ## What you need
 * An IOMMU enabled motherboard. Check your motherboard manual.
@@ -50,20 +51,20 @@ MODULES=(... vfio_pci vfio vfio_iommu_type1 vfio_virqfd ...)
 HOOKS=(... modconf ...)
 ```
 
-3. [Regenerate the initramfs][initramfs_archwiki]
+3. [Regenerate the initramfs](initramfs_archwiki)
 ```bash
 sudo mkinitcpio -p linux
 ```
 
 4. Reboot the system to load the vfio drivers
 
-5. (Optional)[Download virtio drivers][virtio_drivers]
+5. (Optional)[Download virtio drivers](virtio_drivers)
 ```
 wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 ```
 
-6. Get the GPU BIOS [Source][GPU_BIOS_video] [Why?][]
-[You can download the bios.][techpowerup vgabios] If you do so, download a HEX editor and skip to step 4.
+6. Get the GPU BIOS [Source](GPU_BIOS_video) [Why?][]
+[You can download the bios.](techpowerup vgabios) If you do so, download a HEX editor and skip to step 4.
 1. Boot the host into Windows.
 2. [Download and install GPU-Z][GPU-Z].
 3. [Download and install a HEX editor][bless].
@@ -106,8 +107,9 @@ Things you may have to edit:
   4. The Desktop Environment, Display Manager, Windows Manager, etc.
   5. QEMU options like RAM and CPU config
   6. Kernel modules
+<!--
 Check the guides [IOMMU][], [other guide, may be important][]
-
+-->
 10. Start the VM
 ```
 sudo scripts/windows-install.sh
@@ -134,17 +136,31 @@ sudo scripts/windows.sh
 ```
 
 ## For the sake of convenience
-sudo ln -s /home/yu/scripts/qemu@.service /usr/lib/systemd/system/
+sudo ln -s scripts/qemu@.service /usr/lib/systemd/system/
+
 alias fuckmicrosoft="sudo systemctl start qemu@windows.service"
 
 ## About peripherals
 For audio I use an USB sound card.
+
 For internet I use network.sh
+
 For USB I simply passthrough an USB 3.0 controller.
 
 ## Known problems
 ### Race condition
-There is something somewhere that makes it crash. That's why there is so many `sleep 1`
+There is something somewhere that makes it crash. That's why there is so many `sleep`
 
 ### Root
 QEMU should never be run as root. If you must launch it in a script as root, you should use the `-runas` option to make QEMU drop root privileges.
+
+### MacOS does not like USB hubs, therefore anything connected to a hub will be ignored
+
+
+## TODO
+- [x] Unbind GPU without `virsh`
+- [ ] Update macos script
+- [ ] Network
+- [ ] IOMMU
+- [ ] Troubleshooting
+- [ ] ???
