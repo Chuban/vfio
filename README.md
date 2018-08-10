@@ -207,5 +207,5 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 [virtio_drivers]: https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers
 [libvirt_archwiki]: https://wiki.archlinux.org/index.php/Libvirt
 [GPU_drivers]: https://www.nvidia.com/Download/index.aspx?lang=en-us
-[windows 10 screenshot]: /Screenshots/windows-10-qemu-single-gpu-info.png
-[macos screenshot]: /Screenshots/macos-high-sierra-10.3.3-single-gpu-info.png
+[windows 10 screenshot]: /Screenshots/Windows 10 QEMU single GPU info.png
+[macos screenshot]: /Screenshots/MacOS High Sierra 10.13.3 single GPU info.png
