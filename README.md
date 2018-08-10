@@ -2,13 +2,13 @@
 <!-- AKA Passthrough VGA on first slot -->
 ----
 ## ToC
-1. [What this does](##what this does)
-2. [What you need](##what you need)
-3. [My system](##my system)
-4. [Configure](##configure)
-5. [About peripherals](##about peripherals)
-6. [Known problems](##known problems)
-7. [TODO](##todo)
+1. [What this does](#what-this-does)
+2. [What you need](#what-you-need)
+3. [My system](#my-system)
+4. [Configure](#configure)
+5. [About peripherals](#about-peripherals)
+6. [Known problems](#known-problems)
+7. [TODO](#todo)
 
 
 ## What this does
@@ -70,20 +70,21 @@ sudo mkinitcpio -p linux
 wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 ```
 
-6. Get the GPU BIOS [Source](GPU_BIOS_video) [Why?][]
-[You can download the bios.](techpowerup vgabios) If you do so, download a HEX editor and skip to step 4.
-1. Boot the host into Windows.
-2. [Download and install GPU-Z][GPU-Z].
-3. [Download and install a HEX editor][bless].
-3. Open GPU-Z and backup the GPU BIOS. Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created. [There is also a way of doing it in Linux][] but it did not work for me.
-4. Open the ROM (`GK104.rom`) in the HEX editor.
-5. After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`, and save. I strongly recommend not to overwrite the original ROM.
+6. Get the GPU BIOS [Source](GPU_BIOS_video) <!--[Why?][] -->
+  [You can download the bios.](techpowerup vgabios) If you do so, download a HEX editor and skip to step 4.
+
+  1. Boot the host into Windows.
+  2. [Download and install GPU-Z](GPU-Z).
+  3. [Download and install a HEX editor](bless).
+  3. Open GPU-Z and backup the GPU BIOS. Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created. [There is also a way of doing it in Linux]() but it did not work for me.
+  4. Open the ROM (`GK104.rom`) in the HEX editor.
+  5. After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`, and save. I strongly recommend not to overwrite the original ROM.
 
 And you must supply QEMU with the Full GPU's ROM extracted extracted using a tool called "nvagetbios" , which you can find in a package called "envytools"
 
 
 
-\\ Mod this section, refer to guide
+<!-- \\ Mod this section, refer to guide -->
 7. Get the iommu groups needed for the VM (GPU, GPU audio and USB controller)
 ```bash
 chmod +x scripts/iommu.sh
@@ -101,7 +102,7 @@ IOMMU group 18
 	08:00.2 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] [1022:7901] (rev 51)
 ```
 
-8. (Optional) Create the image for the VM
+8. (Optional) Create the image for the VM. Only if not using a physical hard drive.
 ```
 qemu-img create -f raw windows.raw 60G
 ```
@@ -135,7 +136,7 @@ When you are asked for a hard drive there will be none.
   9. Next
   10. Select the `Unallocated Space`
   11. Proceed as normal.
-  12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA][GPU_drivers].
+  12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA](GPU_drivers).
 
 12. Once installed Windows, run the VM with
 ```
@@ -143,9 +144,12 @@ sudo scripts/windows.sh
 ```
 
 ### For the sake of convenience
+```
 sudo ln -s scripts/qemu@.service /usr/lib/systemd/system/
-
+```
+```
 alias fuckmicrosoft="sudo systemctl start qemu@windows.service"
+```
 
 ## About peripherals
 For audio I use an USB sound card.
@@ -168,6 +172,13 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 - [x] Unbind GPU without `virsh`
 - [ ] Update macos script
 - [ ] Network
+- [ ] Audio
 - [ ] IOMMU
 - [ ] Troubleshooting
+- [ ] Extract the vBIOS in Linux
+- [ ] De-configure `/etc/mkinitcpio.conf`
+- [ ] How to edit the `windows.sh` script
+- [ ] Fix the race condition
+- [ ] Create scripts for install and use (Without DVD images)
+- [ ] Try to run the VM as user
 - [ ] ???
