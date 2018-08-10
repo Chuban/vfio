@@ -24,26 +24,26 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 
 ## My system
 ```
-              [Hardware]
-               CPU: AMD Ryzen 5 2600
-       Motherboard: Gigabyte AB350M-Gaming 3 rev1.1
-  Motherboard BIOS: F23d
-               RAM: 16GB
-               GPU: Gigabyte Nvidia GeForce GTX 770
-         GPU model: GV-N770OC-2GD
-          GPU BIOS: 80.04.C3.00.0F
-      GPU codename: GK104
+                                                [Hardware]
+                                                 CPU: AMD Ryzen 5 2600
+                                         Motherboard: Gigabyte AB350M-Gaming 3 rev1.1
+                                    Motherboard BIOS: F23d
+                                                 RAM: 16GB
+                                                 GPU: Gigabyte Nvidia GeForce GTX 770
+                                           GPU model: GV-N770OC-2GD
+                                            GPU BIOS: 80.04.C3.00.0F
+                                        GPU codename: GK104
 
-              [Software]
-      Linux Distro: ArchLinux
-      Linux Kernel: 4.17.11 vanilla
-     Nvidia divers: 396.45-2
-      QEMU version: 2.12.0-2
-      OVMF version: r24021
+                                                [Software]
+                                        Linux Distro: ArchLinux
+                                        Linux Kernel: 4.17.11 vanilla
+                                       Nvidia divers: 396.45-2
+                                        QEMU version: 2.12.0-2
+                                        OVMF version: r24021
 
-               [Guests]
-           Windows: Windows 10 Pro 1709 x64
-             MacOS: MacOS 10.13.3
+                                                 [Guests]
+                                             Windows: Windows 10 Pro 1709 x64
+                                               MacOS: MacOS 10.13.3
 
 ```  
 
@@ -185,7 +185,7 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 - [ ] IOMMU
 - [ ] Troubleshooting
 - [ ] Extract the vBIOS in Linux
-- [ ] De-configure `/etc/mkinitcpio.conf`
+- [ ] Try if is necessary to edit `/etc/mkinitcpio.conf`
 - [ ] How to edit the `windows.sh` script
 - [ ] Fix the race condition
 - [ ] Create scripts for install and use (Without DVD images)

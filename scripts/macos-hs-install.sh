@@ -106,7 +106,9 @@ qemu-system-x86_64 -enable-kvm \
     -device ide-drive,bus=ide.2,drive=Clover \
 	  -drive id=Clover,if=none,snapshot=on,format=qcow2,file=$CLOVER \
 	  -device ide-drive,bus=ide.1,drive=MacHDD \
-	  -drive id=MacHDD,if=none,file=$IMG,format=raw > /dev/null 2>&1 &
+	  -drive id=MacHDD,if=none,file=$IMG,format=raw \
+    -device ide-drive,bus=ide.0,drive=MacDVD \
+	  -drive id=MacDVD,if=none,snapshot=on,media=cdrom,file=$ISO > /dev/null 2>&1 &
 # END QEMU (VM) command
 
 # Wait for QEMU to finish before continue
