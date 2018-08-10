@@ -43,7 +43,7 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 
                                                  [Guests]
                                              Windows: Windows 10 Pro 1709 x64
-                                               MacOS: MacOS 10.13.3
+                                               MacOS: MacOS High Sierra 10.13.3
 
 ```  
 
@@ -53,31 +53,28 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 git clone https://gitlab.com/YuriAlek/vfio.git
 ```
 
-2. Enable vfio at boot. Edit `/etc/mkinitcpio.conf`
+2. Enable vfio at boot. Edit `/etc/mkinitcpio.conf`.
 ```
 MODULES=(... vfio_pci vfio vfio_iommu_type1 vfio_virqfd ...)
 HOOKS=(... modconf ...)
 ```
 
-3. [Regenerate the initramfs](initramfs_archwiki)
+3. [Regenerate the initramfs](https://wiki.archlinux.org/index.php/Mkinitcpio#Image_creation_and_activation)
 ```bash
 sudo mkinitcpio -p linux
 ```
 
 4. Reboot the system to load the vfio drivers
 
-5. [Optional] [Download virtio drivers](virtio_drivers)
+5. [Optional] [Download virtio drivers](https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers)
 ```
 wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 ```
 
-6. Get the GPU BIOS [Source](GPU_BIOS_video)
-<!-- [Why?][] -->
-
-  [You can download the bios.](techpowerup vgabios) If you do so, download a HEX editor and skip to step 4.
+6. Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios](https://www.techpowerup.com/vgabios/). If you do so, download a HEX editor and skip to step 4.
   1. Boot the host into Windows.
-  2. [Download and install GPU-Z](GPU-Z).
-  3. [Download and install a HEX editor](bless).
+  2. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
+  3. [Download and install a HEX editor](https://github.com/bwrsandman/Bless).
   3. Open GPU-Z and backup the GPU BIOS. Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created. [There is also a way of doing it in Linux]() but it did not work for me.
   4. Open the ROM (`GK104.rom`) in the HEX editor.
   5. After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`, and save. I strongly recommend not to overwrite the original ROM.
@@ -136,7 +133,7 @@ sudo scripts/windows-install.sh
   9. Next
   10. Select the `Unallocated Space`
   11. Proceed as normal.
-  12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA](GPU_drivers).
+  12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA](https://www.nvidia.com/Download/index.aspx?lang=en-us).
 
 12. Once installed Windows, run the VM with
 ```
@@ -179,7 +176,7 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 
 ## TODO
 - [x] Unbind GPU without `virsh`
-- [ ] Update macos script
+- [x] Update macos script
 - [ ] Network
 - [ ] Audio
 - [ ] IOMMU
@@ -193,19 +190,12 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 - [ ] ???
 
 <!-- Links -->
-[techpowerup vgabios]: https://www.techpowerup.com/vgabios/
-[GPU_BIOS_video]: https://www.youtube.com/watch?v=1IP-h9IKof0
-[GPU-Z]: https://www.techpowerup.com/gpuz/
-[bless]: https://github.com/bwrsandman/Bless
 [Xen Wiki]: https://wiki.xen.org/wiki/VTd_HowTo
 [IOMMU Hardware]:https://en.wikipedia.org/wiki/List_of_IOMMU-supporting_hardware
 [archwiki-url]: https://wiki.archlinux.org/index.php/Main_page
 [qemu_archwiki]: https://wiki.archlinux.org/index.php/QEMU
 [kvm-archwiki]: https://wiki.archlinux.org/index.php/KVM
 [pci_passthrough-archwiki]: https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF
-[initramfs_archwiki]: https://wiki.archlinux.org/index.php/Mkinitcpio#Image_creation_and_activation
-[virtio_drivers]: https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers
 [libvirt_archwiki]: https://wiki.archlinux.org/index.php/Libvirt
-[GPU_drivers]: https://www.nvidia.com/Download/index.aspx?lang=en-us
 [windows 10 screenshot]: /Screenshots/Windows 10 QEMU single GPU info.png
 [macos screenshot]: /Screenshots/MacOS High Sierra 10.13.3 single GPU info.png
