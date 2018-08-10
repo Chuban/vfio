@@ -1,11 +1,18 @@
 # Single GPU passthrough with QEMU and VFIO
 <!-- AKA Passthrough VGA on first slot -->
 ----
+## ToC
+1. [What this does](##what this does)
+2. [What you need](##what you need)
+3. [My system](##my system)
+4. [Configure](##configure)
+5. [About peripherals](##about peripherals)
+6. [Known problems](##known problems)
+7. [TODO](##todo)
+
+
 ## What this does
 In one command it kills X, frees the GPU from drivers and console, detaches the GPU from the host, starts the VM with the GPU, waits until the VM is off, reattaches the GPU to the host and starts lightdm.
-
-## ToC
-[[_TOC_]]
 
 ## What you need
 * An IOMMU enabled motherboard. Check your motherboard manual.
@@ -135,7 +142,7 @@ When you are asked for a hard drive there will be none.
 sudo scripts/windows.sh
 ```
 
-## For the sake of convenience
+### For the sake of convenience
 sudo ln -s scripts/qemu@.service /usr/lib/systemd/system/
 
 alias fuckmicrosoft="sudo systemctl start qemu@windows.service"
@@ -154,7 +161,7 @@ There is something somewhere that makes it crash. That's why there is so many `s
 ### Root
 QEMU should never be run as root. If you must launch it in a script as root, you should use the `-runas` option to make QEMU drop root privileges.
 
-### MacOS does not like USB hubs, therefore anything connected to a hub will be ignored
+### MacOS does not like USB hubs, therefore anything connected to a hub will be ignored by MacOS
 
 
 ## TODO
