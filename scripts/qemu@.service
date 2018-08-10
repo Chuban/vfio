@@ -2,12 +2,11 @@
 Description=QEMU virtual machine (%i)
 
 [Service]
-
-Type=forking
-PIDFile=/run/qemu_%i.pid
+#Type=forking
+#PIDFile=/run/qemu_%i.pid
 
 ExecStart=/home/yu/scripts/%i.sh
-TimeoutStopSec=1m
+#TimeoutStopSec=1m
 
 [Install]
 WantedBy=multi-user.target

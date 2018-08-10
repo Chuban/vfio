@@ -1,6 +1,8 @@
 # Single GPU passthrough with QEMU and VFIO
 <!-- AKA Passthrough VGA on first slot -->
 
+![Windows 10 1709][windows 10 screenshot]*Windows 10 1709*
+
 ## ToC
 1. [What this does](#what-this-does)
 2. [What you need](#what-you-need)
@@ -189,3 +191,21 @@ QEMU should never be run as root. If you must launch it in a script as root, you
 - [ ] Create scripts for install and use (Without DVD images)
 - [ ] Try to run the VM as user
 - [ ] ???
+
+<!-- Links -->
+[techpowerup vgabios]: https://www.techpowerup.com/vgabios/
+[GPU_BIOS_video]: https://www.youtube.com/watch?v=1IP-h9IKof0
+[GPU-Z]: https://www.techpowerup.com/gpuz/
+[bless]: https://github.com/bwrsandman/Bless
+[Xen Wiki]: https://wiki.xen.org/wiki/VTd_HowTo
+[IOMMU Hardware]:https://en.wikipedia.org/wiki/List_of_IOMMU-supporting_hardware
+[archwiki-url]: https://wiki.archlinux.org/index.php/Main_page
+[qemu_archwiki]: https://wiki.archlinux.org/index.php/QEMU
+[kvm-archwiki]: https://wiki.archlinux.org/index.php/KVM
+[pci_passthrough-archwiki]: https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF
+[initramfs_archwiki]: https://wiki.archlinux.org/index.php/Mkinitcpio#Image_creation_and_activation
+[virtio_drivers]: https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers
+[libvirt_archwiki]: https://wiki.archlinux.org/index.php/Libvirt
+[GPU_drivers]: https://www.nvidia.com/Download/index.aspx?lang=en-us
+[windows 10 screenshot]: /Screenshots/windows-10-qemu-single-gpu-info.png
+[macos screenshot]: /Screenshots/macos-high-sierra-10.3.3-single-gpu-info.png
