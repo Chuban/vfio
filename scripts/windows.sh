@@ -30,8 +30,14 @@ usbid="1022 145f"
 videobusid="0000:06:00.0"
 audiobusid="0000:06:00.1"
 usbbusid="0000:07:00.3"
+ULIMIT=$(ulimit -a | grep "max locked memory" | awk '{print $6}')
 
 # END Variables
+
+# Memory lock limit
+if [ $(ulimit -a | grep "max locked memory" | awk '{print $6}') != 12884900 ]; then
+  ulimit -l 12884900
+fi
 
 ## Kill X and related
 systemctl stop lightdm > /dev/null 2>&1
@@ -57,6 +63,10 @@ modprobe -r snd_hda_intel
 sleep 2
 
 # Load the kernel module
+modprobe vfio
+sleep 1
+modprobe vfio_iommu_type1
+sleep 1
 modprobe vfio-pci
 sleep 1
 
@@ -90,7 +100,7 @@ echo $usbid > /sys/bus/pci/drivers/vfio-pci/remove_id
 sleep 1
 
 # QEMU (VM) command
-qemu-system-x86_64 -enable-kvm \
+qemu-system-x86_64 -runas yu -enable-kvm \
     -nographic -vga none -parallel none -serial none \
     -enable-kvm \
     -m $RAM \
@@ -100,6 +110,8 @@ qemu-system-x86_64 -enable-kvm \
     -device vfio-pci,host=$IOMMU_GPU,multifunction=on,x-vga=on,romfile=$VBIOS \
     -device vfio-pci,host=$IOMMU_GPU_AUDIO \
     -device vfio-pci,host=$IOMMU_USB \
+    -device virtio-net-pci,netdev=n1 \
+    -netdev user,id=n1 \
     -drive if=pflash,format=raw,readonly,file=$OVMF_CODE \
     -device virtio-scsi-pci,id=scsi0 \
     -device scsi-hd,bus=scsi0.0,drive=rootfs \
@@ -112,6 +124,10 @@ sleep 5
 
 # Unload the vfio module. I am lazy, this leaves the GPU without drivers
 modprobe -r vfio-pci
+sleep 2
+modprobe -r vfio_iommu_type1
+sleep 2
+modprobe -r vfio
 sleep 2
 
 # Reload the kernel modules. This loads the drivers for the GPU
@@ -145,5 +161,9 @@ sleep 5
 systemctl start lightdm
 sleep 5
 
+# Restore the Frame Buffer
 echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/bind
 sleep 1
+
+# Restore ulimit
+ulimit -l $ULIMIT

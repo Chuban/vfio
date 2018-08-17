@@ -3,14 +3,13 @@
 
 ![Windows 10 1709](/Screenshots/Windows 10 QEMU single GPU info.png)*Windows 10 1709*
 
-## ToC
+## Table of Contents
 1. [What this does](#what-this-does)
 2. [What you need](#what-you-need)
 3. [My system](#my-system)
 4. [Configure](#configure)
-5. [About peripherals](#about-peripherals)
-6. [Known problems](#known-problems)
-7. [TODO](#todo)
+5. [Known problems](#known-problems)
+6. [TODO](#todo)
 
 ## What this does
 In one command it kills X, frees the GPU from drivers and console, detaches the GPU from the host, starts the VM with the GPU, waits until the VM is off, reattaches the GPU to the host and starts lightdm.
@@ -18,7 +17,7 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 ## What you need
 * An IOMMU enabled motherboard. Check your motherboard manual.
 * CPU support for AMD-v/VT-x and AMD-Vi/VT-d (AMD/Intel). And virtualization support enabled on BIOS.
-* One GPU that supports UEFI and its BIOS. All GPUs from 2012 and later should support this.
+* One GPU that supports UEFI and its BIOS. All GPUs from 2012 and later should support this. If the GPU does not support UEFI you may be able to make it work, but you wont see anything in the screen until the drivers inside Windows kick in.
 * QEMU, OVMF UEFI and VIRTIO drivers for Windows.
 * [Optional] HDD only for Windows
 
@@ -36,9 +35,9 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 
                                                 [Software]
                                         Linux Distro: ArchLinux
-                                        Linux Kernel: 4.17.11 vanilla
-                                       Nvidia divers: 396.45-2
-                                        QEMU version: 2.12.0-2
+                                        Linux Kernel: 4.17.14 vanilla
+                                       Nvidia divers: 396.51-1
+                                        QEMU version: 2.12.1-1
                                         OVMF version: r24021
 
                                                  [Guests]
@@ -50,39 +49,26 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 ## Configure
 1. Clone this repository
 ```bash
-git clone https://gitlab.com/YuriAlek/vfio.git
+$ git clone https://gitlab.com/YuriAlek/vfio.git
 ```
 
-2. Enable vfio at boot. Edit `/etc/mkinitcpio.conf`.
+2. [Optional] [Download virtio drivers](https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers). If you do not, modify the `windows.sh` script.
 ```
-MODULES=(... vfio_pci vfio vfio_iommu_type1 vfio_virqfd ...)
-HOOKS=(... modconf ...)
-```
-
-3. [Regenerate the initramfs](https://wiki.archlinux.org/index.php/Mkinitcpio#Image_creation_and_activation)
-```bash
-sudo mkinitcpio -p linux
+$ wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 ```
 
-4. Reboot the system to load the vfio drivers
-
-5. [Optional] [Download virtio drivers](https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers)
-```
-wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
-```
-
-6. Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios](https://www.techpowerup.com/vgabios/). If you do so, download a HEX editor and skip to step 4.
+3. Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, download a HEX editor and skip to step 5.
   1. Boot the host into Windows.
   2. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
   3. [Download and install a HEX editor](https://github.com/bwrsandman/Bless).
-  3. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
-  4. Open the ROM (`GK104.rom`) in the HEX editor.
-  5. [After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
+  4. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
+  5. Open the vBIOS ROM (`GK104.rom`) in the HEX editor.
+  6. [After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
 
-7. Get the iommu groups needed for the VM (GPU, GPU audio and USB controller)
-```bash
-chmod +x scripts/iommu.sh
-bash scripts/iommu.sh
+4. Get the iommu groups needed for the VM (GPU, GPU audio and USB controller)
+```
+$ chmod +x scripts/iommu.sh
+$ scripts/iommu.sh
 -------------------------
 # GPU
 IOMMU group 13
@@ -96,27 +82,25 @@ IOMMU group 18
 	  08:00.2 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] [1022:7901] (rev 51)
 ```
 
-8. [Optional] Create the image for the VM. Only if not using a physical hard drive.
-```
-qemu-img create -f raw windows.raw 60G
+5. [Optional] Create the image for the VM. Only if not using a physical hard drive.
+```bash
+$ qemu-img create -f raw windows.raw 60G
 ```
 
-9. Edit the script `windows-install.sh` and `windows.sh` to convenience. Things you may have to edit:
+6. Edit the script `windows-install.sh` **and** `windows.sh` to convenience. Things you may have to edit:
   1. PCI devices
   2. User
   3. Location of HDD, ISO, vBIOS and OVMF image
   4. The Desktop Environment, Display Manager, Window Manager, etc.
   5. QEMU options like RAM and CPU
   6. Kernel modules
-<!--
-Check the guides [IOMMU][], [other guide, may be important][]
--->
-10. Start the VM
+
+7. Start the VM
 ```
-sudo scripts/windows-install.sh
+# scripts/windows-install.sh
 ```
 
-11. When installing Windows, in the section `Where do you want to install Windows?` there will be no hard drives to install to; to fix it:
+8. When installing Windows, in the section `Where do you want to install Windows?` there will be no hard drives to install to; to fix it:
   1. Load driver
   2. Browse
   3. CD Drive (E:) virtio-win-0.1.1
@@ -130,58 +114,59 @@ sudo scripts/windows-install.sh
   11. Proceed as normal.
   12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA](https://www.nvidia.com/Download/index.aspx?lang=en-us).
 
-12. Once installed Windows, run the VM with
+9. Once installed Windows, run the VM with:
 ```
-sudo scripts/windows.sh
+# scripts/windows.sh
 ```
 
 ### For the sake of convenience
-```bash
-sudo ln -s scripts/qemu@.service /usr/lib/systemd/system/
+```
+# ln -s scripts/qemu@.service /usr/lib/systemd/system/
 ```
 ```bash
-alias windows="sudo systemctl start qemu@windows.service"
-alias macos="sudo systemctl start qemu@macos-hs.service"
+$ alias windows="sudo systemctl start qemu@windows.service"
+$ alias macos="sudo systemctl start qemu@macos-hs.service"
 ```
 To start the Windows VM
 ```
-windows
+$ windows
 ```
 To start the MacOS VM
 ```
-macos
+$ macos
 ```
-
-## About peripherals
-For audio I use an USB sound card.
-
-For internet I use network.sh
-
-For USB I simply passthrough an USB 3.0 controller.
 
 ## Known problems
 ### Race condition
 There is something somewhere that makes it crash. That's why there is so many `sleep`
 
-### Root
-QEMU should never be run as root. If you must launch it in a script as root, you should use the `-runas` option to make QEMU drop root privileges.
-
 ### MacOS does not like USB hubs, therefore anything connected to a hub will be ignored by MacOS
+
+### Sometimes works, sometimes does not
+Sometimes the GPU will not have correct drivers, Windows may install them... or not.
+
+Sometimes the QEMU command will just fail and the command continues and start X again.
+
+Sometimes the QEMU command does not exit after shutting down the VM.
+
+### Windows version
+Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). I have heard that the 1803 version comes with a Spectre patch and the performance is pathetic.
 
 
 ## TODO
 - [x] Unbind GPU without `virsh`
 - [x] Update macos script
+- [x] Try to run the VM as user.
+- [x] Try if is necessary to edit `/etc/mkinitcpio.conf`
 - [ ] Network
 - [ ] Audio
-- [ ] IOMMU
-- [ ] Troubleshooting
-- [ ] Extract the vBIOS in Linux
-- [ ] Try if is necessary to edit `/etc/mkinitcpio.conf`
+- [ ] IOMMU guide
+- [ ] Troubleshooting guide
+- [ ] Extract the vBIOS in Linux guide
 - [ ] How to edit the `windows.sh` script
 - [ ] Fix the race condition
 - [ ] Create scripts for install and use (Without DVD images)
-- [ ] Try to run the VM as user
+- [ ] ACS Patch (Does not work for me)
 - [ ] ???
 
 <!--
