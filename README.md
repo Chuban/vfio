@@ -71,12 +71,10 @@ From here you are alone, I don't know how to proceed. Maybe you need to edit, ma
 7. [Edit the vBIOS](#edit-the-vbios)
 
 ### Method 3 - Windows
-Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, [skip to edit the vBIOS](#edit-the-vbios).
-1. Boot the host into Windows.
-2. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
-3. [Download and install a HEX editor](https://github.com/bwrsandman/Bless).
-4. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
-5. [Edit the vBIOS](#edit-the-vbios)
+[Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, [skip to edit the vBIOS](#edit-the-vbios).
+1. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
+2. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
+3. [Edit the vBIOS](#edit-the-vbios)
 
 ### Edit the VBIOS
 1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
