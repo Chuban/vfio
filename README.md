@@ -6,11 +6,12 @@
 ## Table of Contents
 1. [What this does](#what-this-does)
 2. [What you need](#what-you-need)
-3. [My system](#my-system)
-4. [vBIOS](#vbios)
-5. [Configure](#configure)
-6. [Known problems](#known-problems)
-7. [TODO](#todo)
+3. [Submit your own configuration](#submit-your-own-configuration)
+4. [My system](#my-system)
+5. [vBIOS](#vbios)
+6. [Configure](#configure)
+7. [Known problems](#known-problems)
+8. [TODO](#todo)
 
 ## What this does
 In one command it kills X, frees the GPU from drivers and console, detaches the GPU from the host, starts the VM with the GPU, waits until the VM is off, reattaches the GPU to the host and starts lightdm.
@@ -186,7 +187,7 @@ Sometimes the QEMU command will just fail and the command continues and start X 
 Sometimes the QEMU command does not exit after shutting down the VM.
 
 ### Windows version
-Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have heard that the 1803 version comes with a Spectre patch and the performance is bad.](https://www.reddit.com/r/VFIO/comments/97unx4/passmark_lousy_2d_graphics_performance_on_windows/). The Spectre patch can be disabled.
+Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have heard that the 1803 version comes with a Spectre patch and the performance is bad](https://www.reddit.com/r/VFIO/comments/97unx4/passmark_lousy_2d_graphics_performance_on_windows/). The Spectre patch can be disabled.
 
 ## TODO
 - [x] Unbind GPU without `virsh`.

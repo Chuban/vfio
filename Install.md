@@ -6,7 +6,7 @@
 ```
 
 ### Enabling IOMMU support on boot
-For `systemd-boot`, edit `/boot/loader/entries/arch.conf` and add `intel_iommu=on` **OR** `amd_iommu=on` and `iommu=pt`.
+For `systemd-boot` edit `/boot/loader/entries/arch.conf` and add `intel_iommu=on` **OR** `amd_iommu=on` and `iommu=pt`.
 ```
 # AMD
 options root=/dev/sda2 amd_iommu=on iommu=pt
