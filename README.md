@@ -20,7 +20,7 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 * CPU support for AMD-v/VT-x and AMD-Vi/VT-d (AMD/Intel).
 * Virtualization support enabled on BIOS; check your motherboard manual if you need help.
 * One GPU that supports UEFI and its BIOS. All GPUs from 2012 and later should support this, some may have issues. If the GPU does not support UEFI you may be able to make it work, but you won't see anything in the screen until the drivers inside Windows kick in.
-* QEMU, OVMF UEFI and VIRTIO drivers for Windows. [If you need to install, refer to ]
+* QEMU, OVMF UEFI and VIRTIO drivers for Windows. [If you need to install, refer to the Install guide](Install.md)
 * [Optional] HDD only for Windows
 * [Recommended] Another computer to login remotely with `ssh` for convenience, at least until you have everything working.
 
