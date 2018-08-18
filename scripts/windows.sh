@@ -100,7 +100,7 @@ echo $usbid > /sys/bus/pci/drivers/vfio-pci/remove_id
 sleep 1
 
 # QEMU (VM) command
-qemu-system-x86_64 -runas yu -enable-kvm \
+qemu-system-x86_64 -runas $USER -enable-kvm \
     -nographic -vga none -parallel none -serial none \
     -enable-kvm \
     -m $RAM \
