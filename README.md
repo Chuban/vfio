@@ -7,7 +7,7 @@
 1. [What this does](#what-this-does)
 2. [What you need](#what-you-need)
 3. [My system](#my-system)
-4. [vBIOS](#evbios)
+4. [vBIOS](#vbios)
 5. [Configure](#configure)
 6. [Known problems](#known-problems)
 7. [TODO](#todo)
@@ -51,7 +51,7 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 ## vBIOS
 I experienced some weird things when doing this on the display, like a corruption of the image, but seems to work fine. If you encounter anything, a reboot solved my problems.
 
-### Method 1 Linux
+### Method 1 - Linux
 It did not work for me, the ROM is 59KiB and it should be around 162KiB. It may work for you.
 1. Execute `scripts/iommu.sh` as **root** to get the BUS ID for the GPU. Looks like `0000:06:00.0`.
 2. Edit `scripts/extract-vbios-linux.sh` to your convenience. Change `videobusid=`. [Optional] Change also the location where the vBIOS will be save `VBIOS=`.
@@ -61,16 +61,17 @@ It did not work for me, the ROM is 59KiB and it should be around 162KiB. It may 
 
 From here you are alone, I don't know how to proceed. Maybe you need to edit, maybe don't.
 
-### Method 2 nvflash in Linux
+### Method 2 - nvflash in Linux
 1. Download nvflash https://www.techpowerup.com/download/nvidia-nvflash/. Do not install from AUR; the package it's broken.
 2. Unzip it as `/root/nvflash_linux` with `# unzip nvflash_5.414.0_linux.zip -d /root/`
-3. Edit `scripts/extract-vbios-nvflash.sh`. Change `videobusid` with your GPU; `NVFLASH=` if you changed the location of the executable; and `VBIOS=` if you want the ROM in other place.
-4. Link the service to systemd: `ln -s scripts/qemu@.service /usr/lib/systemd/system/`
-5. Execute the systemd unit with `sudo systemctl start qemu@extract-vbios-nvflash.service`. You can also do it over `ssh`. The extracted ROM will be in the root directory `/root/vBIOS.rom`
-6. [Edit the vBIOS](#edit-the-vbios)
+3. Execute `scripts/iommu.sh` as **root** to get the BUS ID for the GPU. Looks like `0000:06:00.0`.
+4. Edit `scripts/extract-vbios-nvflash.sh`. Change `videobusid` with your GPU; `NVFLASH=` if you changed the location of the executable; and `VBIOS=` if you want the ROM in other place.
+5. Link the service to systemd: `ln -s scripts/qemu@.service /usr/lib/systemd/system/`
+6. Execute the systemd unit with `sudo systemctl start qemu@extract-vbios-nvflash.service`. You can also do it over `ssh`. The extracted ROM will be in the root directory `/root/vBIOS.rom`
+7. [Edit the vBIOS](#edit-the-vbios)
 
-### Method 3 Windows
-Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, download a HEX editor and skip to step 5.
+### Method 3 - Windows
+Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, [skip to edit the vBIOS](#edit-the-vbios).
 1. Boot the host into Windows.
 2. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
 3. [Download and install a HEX editor](https://github.com/bwrsandman/Bless).
