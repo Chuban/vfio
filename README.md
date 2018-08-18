@@ -24,6 +24,9 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 * [Optional] HDD only for Windows
 * [Recommended] Another computer to login remotely with `ssh` for convenience, at least until you have everything working.
 
+## Submit your own configuration
+[Create a pull merge](https://gitlab.com/YuriAlek/vfio/merge_requests/new) with [a file explaining how you got it working](Hardware configurations/README.md)
+
 ## My system
 ```
                                                 [Hardware]
@@ -184,9 +187,6 @@ Sometimes the QEMU command does not exit after shutting down the VM.
 
 ### Windows version
 Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have heard that the 1803 version comes with a Spectre patch and the performance is bad.](https://www.reddit.com/r/VFIO/comments/97unx4/passmark_lousy_2d_graphics_performance_on_windows/). The Spectre patch can be disabled.
-
-## Submit your own configuration
-[Create a pull merge](https://gitlab.com/YuriAlek/vfio/merge_requests/new) with [a file explaining how you got it working](Hardware configurations/readme.md)
 
 ## TODO
 - [x] Unbind GPU without `virsh`.
