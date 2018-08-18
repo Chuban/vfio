@@ -1,4 +1,4 @@
-# A recompilation of hardware and software combinations working for other people
+# A compilation of hardware and software combinations working for other people
 
 **Before creating a merge pull, be sure to read this guide**
 
