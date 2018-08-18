@@ -114,7 +114,7 @@ IOMMU group 18
 $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ```
 
-6. Edit the script `windows-install.sh` **and** `windows.sh` to convenience. Variables you may have to edit:
+6. Edit the config in `scripts/config.sh` to convenience. If you use systemd to start the VM you have to edit the path of your config file in `qemu@.service`. Variables you may have to edit:
   1. PCI devices. `IOMMU_GPU`; `IOMMU_USB`.
   2. User.
   3. Location of HDD/IMG, ISO, vBIOS and OVMF image.
@@ -152,10 +152,11 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ### For the sake of convenience
 ```
 # ln -s scripts/qemu@.service /usr/lib/systemd/system/
+# ln -s scripts/qemu-mac@.service /usr/lib/systemd/system/
 ```
 ```bash
 $ alias windows="sudo systemctl start qemu@windows.service"
-$ alias macos="sudo systemctl start qemu@macos-hs.service"
+$ alias macos="sudo systemctl start qemu-mac@macos-hs.service"
 ```
 To start the Windows VM
 ```

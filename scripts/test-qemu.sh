@@ -7,32 +7,7 @@ if [ "$EUID" -ne 0 ]
 fi
 # END Check if you are sudo
 
-# Variables
-USER=yu
-IOMMU_GPU=06:00.0
-IOMMU_GPU_AUDIO=06:00.1
-IOMMU_USB=07:00.3
-VIRSH_GPU=pci_0000_06_00_0
-VIRSH_GPU_AUDIO=pci_0000_06_00_1
-VIRSH_USB=pci_0000_07_00_3
-VBIOS=/home/$USER/vm/GK104_80.04.C3.00.0F-MODED.rom
-IMG=file=/home/$USER/vm/windows.raw,id=disk,format=raw,if=none
-ISO=/home/yu/vm/win10.iso
-HDD=file=/dev/sdc,media=disk,format=raw,if=none
-# HDD=file=/home/$USER/vm/windows.raw
-OVMF_CODE=/usr/share/ovmf/x64/OVMF_CODE.fd
-RAM=12G
-CORES=12
-RES="1920 1080"
-videoid="10de 1184"
-audioid="10de 0e0a"
-usbid="1022 145f"
-videobusid="0000:06:00.0"
-audiobusid="0000:06:00.1"
-usbbusid="0000:07:00.3"
-ULIMIT=$(ulimit -a | grep "max locked memory" | awk '{print $6}')
-
-# END Variables
+source config.sh
 
 _start()
 {
