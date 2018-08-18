@@ -28,7 +28,7 @@ IMG=$IMAGES/mac-hs.raw,id=disk,format=raw,if=none
 CLOVER=$IMAGES/Clover-1080.qcow2
 ISO=$IMAGES/HighSierra-10.13.6-qemu.iso
 OVMF=$IMAGES/OSX-KVM/OVMF_CODE.fd
-OVMF_VARS=$IMAGES/vm/OSX-KVM/OVMF_VARS.fd
+OVMF_VARS=$IMAGES/OSX-KVM/OVMF_VARS.fd
 
 # QEMU options
 MY_OPTIONS="+aes,+xsave,+avx,+xsaveopt,avx2,+smep"

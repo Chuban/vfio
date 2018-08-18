@@ -114,7 +114,7 @@ IOMMU group 18
 $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ```
 
-6. Edit the config in `scripts/config.sh` to convenience. If you use systemd to start the VM you have to edit the path of your config file in `qemu@.service`. Variables you may have to edit:
+6. Edit the config in `scripts/config.sh` to convenience. If you use systemd to start the VM you have to edit `EnvironmentFile` in `qemu@.service` to point to your config file. Variables you may have to edit:
   1. PCI devices. `IOMMU_GPU`; `IOMMU_USB`.
   2. User.
   3. Location of HDD/IMG, ISO, vBIOS and OVMF image.
