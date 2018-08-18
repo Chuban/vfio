@@ -7,9 +7,10 @@
 1. [What this does](#what-this-does)
 2. [What you need](#what-you-need)
 3. [My system](#my-system)
-4. [Configure](#configure)
-5. [Known problems](#known-problems)
-6. [TODO](#todo)
+4. [vBIOS](#evbios)
+5. [Configure](#configure)
+6. [Known problems](#known-problems)
+7. [TODO](#todo)
 
 ## What this does
 In one command it kills X, frees the GPU from drivers and console, detaches the GPU from the host, starts the VM with the GPU, waits until the VM is off, reattaches the GPU to the host and starts lightdm.
@@ -20,6 +21,7 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 * One GPU that supports UEFI and its BIOS. All GPUs from 2012 and later should support this. If the GPU does not support UEFI you may be able to make it work, but you wont see anything in the screen until the drivers inside Windows kick in.
 * QEMU, OVMF UEFI and VIRTIO drivers for Windows.
 * [Optional] HDD only for Windows
+* [Recommended] Another computer to login remotely with `ssh` for convenience, at least until you have everything working.
 
 ## My system
 ```
@@ -46,6 +48,39 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 
 ```  
 
+## vBIOS
+I experienced some weird things when doing this on the display, like a corruption of the image, but seems to work fine. If you encounter anything, a reboot solved my problems.
+
+### Method 1 Linux
+It did not work for me, the ROM is 59KiB and it should be around 162KiB. It may work for you.
+1. Execute `scripts/iommu.sh` as **root** to get the BUS ID for the GPU. Looks like `0000:06:00.0`.
+2. Edit `scripts/extract-vbios-linux.sh` to your convenience. Change `videobusid=`. [Optional] Change also the location where the vBIOS will be save `VBIOS=`.
+3. Make the script executable with `chmod +x scripts/extract-vbios-linux.sh`
+4. Link the service to systemd: `ln -s scripts/qemu@.service /usr/lib/systemd/system/`
+5. Execute the systemd unit with `sudo systemctl start qemu@extract-vbios-linux.service`. You can also do it over `ssh`. The extracted ROM will be in the root directory `/root/vBIOS.rom`
+
+From here you are alone, I don't know how to proceed. Maybe you need to edit, maybe don't.
+
+### Method 2 nvflash in Linux
+1. Download nvflash https://www.techpowerup.com/download/nvidia-nvflash/. Do not install from AUR; the package it's broken.
+2. Unzip it as `/root/nvflash_linux` with `# unzip nvflash_5.414.0_linux.zip -d /root/`
+3. Edit `scripts/extract-vbios-nvflash.sh`. Change `videobusid` with your GPU; `NVFLASH=` if you changed the location of the executable; and `VBIOS=` if you want the ROM in other place.
+4. Link the service to systemd: `ln -s scripts/qemu@.service /usr/lib/systemd/system/`
+5. Execute the systemd unit with `sudo systemctl start qemu@extract-vbios-nvflash.service`. You can also do it over `ssh`. The extracted ROM will be in the root directory `/root/vBIOS.rom`
+6. [Edit the vBIOS](#edit-the-vbios)
+
+### Method 3 Windows
+Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, download a HEX editor and skip to step 5.
+1. Boot the host into Windows.
+2. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
+3. [Download and install a HEX editor](https://github.com/bwrsandman/Bless).
+4. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
+5. [Edit the vBIOS](#edit-the-vbios)
+
+### Edit the VBIOS
+1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
+2. [After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
+
 ## Configure
 1. Clone this repository
 ```bash
@@ -56,14 +91,6 @@ $ git clone https://gitlab.com/YuriAlek/vfio.git
 ```
 $ wget -o virtio-win.iso "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 ```
-
-3. Get the GPU BIOS [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, download a HEX editor and skip to step 5.
-  1. Boot the host into Windows.
-  2. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
-  3. [Download and install a HEX editor](https://github.com/bwrsandman/Bless).
-  4. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
-  5. Open the vBIOS ROM (`GK104.rom`) in the HEX editor.
-  6. [After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
 
 4. Get the iommu groups needed for the VM (GPU, GPU audio and USB controller)
 ```
@@ -136,6 +163,9 @@ To start the MacOS VM
 $ macos
 ```
 
+### For MacOS
+[Check this amazing guide](https://github.com/kholia/OSX-KVM) for creating the MacOS install image and Clover.
+
 ## Known problems
 ### Race condition
 There is something somewhere that makes it crash. That's why there is so many `sleep`
@@ -143,7 +173,7 @@ There is something somewhere that makes it crash. That's why there is so many `s
 ### MacOS does not like USB hubs, therefore anything connected to a hub will be ignored by MacOS
 
 ### Sometimes works, sometimes does not
-Sometimes the GPU will not have correct drivers, Windows may install them... or not.
+Sometimes the GPU will not have correct drivers inside Windows, even when yesterday was working just fine; Windows may install them.
 
 Sometimes the QEMU command will just fail and the command continues and start X again.
 
@@ -156,8 +186,8 @@ Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). I have he
 ## TODO
 - [x] Unbind GPU without `virsh`
 - [x] Update macos script
-- [x] Try to run the VM as user.
-- [x] Try if is necessary to edit `/etc/mkinitcpio.conf`
+- [x] Run QEMU as user.
+- [x] Try if is necessary to edit `/etc/mkinitcpio.conf`. No need to load the kernel modules at boot.
 - [ ] Network
 - [ ] Audio
 - [ ] IOMMU guide
@@ -166,7 +196,8 @@ Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). I have he
 - [ ] How to edit the `windows.sh` script
 - [ ] Fix the race condition
 - [ ] Create scripts for install and use (Without DVD images)
-- [ ] ACS Patch (Does not work for me)
+- [ ] ACS Patch (Does not work for me).
+- [ ] Install guide
 - [ ] ???
 
 <!--
