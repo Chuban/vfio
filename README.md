@@ -82,7 +82,7 @@ From here you are alone, I don't know how to proceed. Maybe you need to edit, ma
 
 ### Edit the VBIOS
 1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
-2. [After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
+2. [After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. [Note that series of `FF` values have been reported](/Screenshots/vBIOS2.png). I strongly recommend not to overwrite the original ROM.
 
 ## Configure
 1. Clone this repository
