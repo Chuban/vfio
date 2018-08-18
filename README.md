@@ -20,7 +20,7 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 * CPU support for AMD-v/VT-x and AMD-Vi/VT-d (AMD/Intel).
 * Virtualization support enabled on BIOS; check your motherboard manual if you need help.
 * One GPU that supports UEFI and its BIOS. All GPUs from 2012 and later should support this, some may have issues. If the GPU does not support UEFI you may be able to make it work, but you won't see anything in the screen until the drivers inside Windows kick in.
-* QEMU, OVMF UEFI and VIRTIO drivers for Windows.
+* QEMU, OVMF UEFI and VIRTIO drivers for Windows. [If you need to install, refer to ]
 * [Optional] HDD only for Windows
 * [Recommended] Another computer to login remotely with `ssh` for convenience, at least until you have everything working.
 
@@ -46,7 +46,6 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
                                                  [Guests]
                                              Windows: Windows 10 Pro 1709 x64
                                                MacOS: MacOS High Sierra 10.13.3
-
 ```  
 
 ## vBIOS
@@ -186,6 +185,8 @@ Sometimes the QEMU command does not exit after shutting down the VM.
 ### Windows version
 Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have heard that the 1803 version comes with a Spectre patch and the performance is bad.](https://www.reddit.com/r/VFIO/comments/97unx4/passmark_lousy_2d_graphics_performance_on_windows/). The Spectre patch can be disabled.
 
+## Submit your own configuration
+[Create a pull merge](https://gitlab.com/YuriAlek/vfio/merge_requests/new) with [a file explaining how you got it working](Hardware configurations/readme.md)
 
 ## TODO
 - [x] Unbind GPU without `virsh`.
@@ -193,8 +194,8 @@ Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have h
 - [x] Run QEMU as user.
 - [x] Try if is necessary to edit `/etc/mkinitcpio.conf`. No need to load the kernel modules at boot.
 - [x] Extract the vBIOS in Linux.
+- [x] Install guide.
 - [ ] Network.
-- [ ] Install guide.
 - [ ] IOMMU guide.
 - [ ] Audio.
 - [ ] Troubleshooting guide.

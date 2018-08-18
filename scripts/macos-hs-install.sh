@@ -71,7 +71,6 @@ sleep 1
 echo $usbbusid > /sys/bus/pci/drivers/vfio-pci/bind
 sleep 1
 echo $usbid > /sys/bus/pci/drivers/vfio-pci/remove_id
-#ls -la /sys/bus/pci/devices/$usbbusid/
 sleep 1
 
 # QEMU (VM) command
@@ -86,7 +85,8 @@ qemu-system-x86_64 -runas $USER -enable-kvm \
     -device vfio-pci,host=$IOMMU_USB \
     -usb -device usb-kbd -device usb-tablet \
     -device nec-usb-xhci,id=xhci \
-    -netdev user,id=net0 -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
+    -netdev user,id=net0 \
+    -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
     -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
 	  -drive if=pflash,format=raw,readonly,file=$OVMF \
     -drive if=pflash,format=raw,file=$OVMF_VARS \
@@ -128,7 +128,6 @@ echo $usbbusid > /sys/bus/pci/drivers/xhci_hcd/bind
 sleep 10
 
 # Re-Bind EFI-Framebuffer and Re-bind to virtual consoles
-# [Source] [https://github.com/joeknock90/Single-GPU-Passthrough/blob/master/README.md#vm-stop-script]
 echo 1 > /sys/class/vtconsole/vtcon0/bind
 sleep 1
 echo 1 > tee /sys/class/vtconsole/vtcon1/bind
