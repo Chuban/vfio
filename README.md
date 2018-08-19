@@ -77,12 +77,13 @@ From here you are alone, I don't know how to proceed. Maybe you need to edit, ma
 ### Method 3 - Windows
 [Source](https://www.youtube.com/watch?v=1IP-h9IKof0). [You can download the bios from techpowerup.com](https://www.techpowerup.com/vgabios/); if you do so, [skip to edit the vBIOS](#edit-the-vbios).
 1. [Download and install GPU-Z](https://www.techpowerup.com/gpuz/).
-2. [Open GPU-Z and backup the GPU BIOS](/Screenshots/vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
+2. [Open GPU-Z and backup the GPU BIOS](/Screenshots/GPU-Z vBIOS.png). Right next to the `Bios Version`; in my case `80.04.C3.00.0F`, there is an icon for backup. A file named `GK104.rom` will be created [Your file name may vary].
 3. [Edit the vBIOS](#edit-the-vbios)
 
 ### Edit the VBIOS
 1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
-2. [After a bunch of `00` there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. [Note that series of `FF` values have been reported](/Screenshots/vBIOS2.png). I strongly recommend not to overwrite the original ROM.
+2. [After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
+[Note that series of `FF` values have been reported on a GTX 1060](/Screenshots/Hex vBIOS 1060.png).
 
 ## Configure
 1. Clone this repository
