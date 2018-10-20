@@ -85,8 +85,8 @@ From here you are alone, I don't know how to proceed. Maybe you need to edit, ma
 
 ### Edit the VBIOS
 1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
-2. [After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
-[Note that series of `FF` values have been reported on a GTX 1060](/Screenshots/Hex vBIOS 1060.png).
+2. ![After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
+![Note that series of `FF` values have been reported on a GTX 1060](/Screenshots/Hex vBIOS 1060.png).
 
 ## Configure
 1. Clone this repository
@@ -122,7 +122,6 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ```
 
 6. Edit the config in `scripts/config.sh` to convenience. If you use systemd to start the VM you have to edit `EnvironmentFile` in `qemu@.service` to point to your config file. Variables you may have to edit:
-
   1. PCI devices. `IOMMU_GPU`; `IOMMU_USB`.
   2. User.
   3. Location of HDD/IMG, ISO, vBIOS and OVMF image.
@@ -139,7 +138,6 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ```
 
 8. When installing Windows, in the section `Where do you want to install Windows?` there will be no hard drives to install to; to fix it:
-
   1. Load driver
   2. Browse
   3. CD Drive (E:) virtio-win-0.1.1
