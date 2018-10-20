@@ -45,10 +45,10 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 
                                                 [Software]
                                         Linux Distro: ArchLinux
-                                        Linux Kernel: 4.17.14
+                                        Linux Kernel: 4.18.14
                                        Nvidia divers: 396.51-1
-                                        QEMU version: 2.12.1-1
-                                        OVMF version: r24021
+                                        QEMU version: 3.0.0-3
+                                        OVMF version: r24601
 
                                                  [Guests]
                                            Windows 10 Pro 1709 x64
@@ -85,7 +85,7 @@ From here you are alone, I don't know how to proceed. Maybe you need to edit, ma
 
 ### Edit the VBIOS
 1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
-2. [After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM. [Note that series of `FF` values have been reported on a GTX 1060](Screenshots/Hex vBIOS 1060.png)
+2. [After a bunch of `00`, there is a `55`, or `U` in HEX; delete everything before the `55`](Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM. [Note that series of `FF` values have been reported on a GTX 1060](Screenshots/Hex vBIOS 1060.png)
 
 ## Configure
 1. Clone this repository
