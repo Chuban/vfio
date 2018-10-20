@@ -121,33 +121,35 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ```
 
 6. Edit the config in `scripts/config.sh` to convenience. If you use systemd to start the VM you have to edit `EnvironmentFile` in `qemu@.service` to point to your config file. Variables you may have to edit:
-  1. PCI devices. `IOMMU_GPU`; `IOMMU_USB`.
-  2. User.
-  3. Location of HDD/IMG, ISO, vBIOS and OVMF image.
-  4. The Desktop Environment, Display Manager, Window Manager, etc. `lightdm`/`i3`.
-  5. QEMU options like RAM and CPU cores.
-  6. Kernel modules.
-  7. Other things like add a command to kill PulseAudio `pulseaudio -k` and another, at the end of the script, to start it again `pulseaudio --start`.
-  8. The network options `-device virtio-net-pci,netdev=n1 -netdev user,id=n1`.
-  9. Swap virtio for sata as the HDD interface.
+    1. PCI devices. `IOMMU_GPU`; `IOMMU_USB`.
+    2. User.
+    3. Location of HDD/IMG, ISO, vBIOS and OVMF image.
+    4. The Desktop Environment, Display Manager, Window Manager, etc. `lightdm`/`i3`.
+    5. QEMU options like RAM and CPU cores.
+    6. Kernel modules.
+    7. Other things like add a command to kill PulseAudio `pulseaudio -k` and another, at the end of the script, to start it again `pulseaudio --start`.
+    8. The network options `-device virtio-net-pci,netdev=n1 -netdev user,id=n1`.
+    9. Swap virtio for sata as the HDD interface.
+
 7. Start the VM
 ```
 # scripts/windows-install.sh
 ```
 
 8. When installing Windows, in the section `Where do you want to install Windows?` there will be no hard drives to install to; to fix it:
-  1. Load driver
-  2. Browse
-  3. CD Drive (E:) virtio-win-0.1.1
-  4. vioscsi
-  5. w10
-  6. amd64
-  7. ok
-  8. Load driver `Red Hat VirtIO SCSI pass-through controller (E:\vioscsi\w10\amd64\vioscsi.inf)`
-  9. Next
-  10. Select the `Unallocated Space`
-  11. Proceed as normal.
-  12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA](https://www.nvidia.com/Download/index.aspx?lang=en-us).
+   1. Load driver
+   2. Browse
+   3. CD Drive (E:) virtio-win-0.1.1
+   4. vioscsi
+   5. w10
+   6. amd64
+   7. ok
+   8. Load driver `Red Hat VirtIO SCSI pass-through controller (E:\vioscsi\w10\amd64\vioscsi.inf)`
+   9. Next
+   10. Select the `Unallocated Space`
+   11. Proceed as normal.
+   12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA](https://www.nvidia.com/Download/index.aspx?lang=en-us).
+
 9. Once installed Windows, run the VM with:
 ```
 # scripts/windows.sh
