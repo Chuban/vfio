@@ -85,8 +85,7 @@ From here you are alone, I don't know how to proceed. Maybe you need to edit, ma
 
 ### Edit the VBIOS
 1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
-2. ![After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](/Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM.
-![Note that series of `FF` values have been reported on a GTX 1060](/Screenshots/Hex vBIOS 1060.png).
+2. ![After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM. ![Note that series of `FF` values have been reported on a GTX 1060](Screenshots/Hex vBIOS 1060.png).
 
 ## Configure
 1. Clone this repository
@@ -131,7 +130,6 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
   7. Other things like add a command to kill PulseAudio `pulseaudio -k` and another, at the end of the script, to start it again `pulseaudio --start`.
   8. The network options `-device virtio-net-pci,netdev=n1 -netdev user,id=n1`.
   9. Swap virtio for sata as the HDD interface.
-
 7. Start the VM
 ```
 # scripts/windows-install.sh
@@ -150,7 +148,6 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
   10. Select the `Unallocated Space`
   11. Proceed as normal.
   12. Let Windows find the drivers for the GPU (if Windows has network) or [download the updated ones from NVIDIA](https://www.nvidia.com/Download/index.aspx?lang=en-us).
-
 9. Once installed Windows, run the VM with:
 ```
 # scripts/windows.sh
