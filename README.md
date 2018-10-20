@@ -85,7 +85,7 @@ From here you are alone, I don't know how to proceed. Maybe you need to edit, ma
 
 ### Edit the VBIOS
 1. Open the vBIOS ROM (`vBIOS.rom`) in the HEX editor.
-2. ![After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM. ![Note that series of `FF` values have been reported on a GTX 1060](Screenshots/Hex vBIOS 1060.png)
+2. [After a bunch of `00`, there is a `55` or `U` in HEX, delete everything before the `55`](Screenshots/Hex vBIOS.png), and save. I strongly recommend not to overwrite the original ROM. [Note that series of `FF` values have been reported on a GTX 1060](Screenshots/Hex vBIOS 1060.png)
 
 ## Configure
 1. Clone this repository
@@ -177,17 +177,7 @@ $ macos
 [Check this amazing guide for creating the MacOS install image and Clover](https://github.com/kholia/OSX-KVM).
 
 ## Known problems
-### Race condition
-There is something somewhere that makes it crash. That's why there is so many `sleep`
-
-### MacOS does not like USB hubs, therefore anything connected to a hub will be ignored by MacOS
-
-### Sometimes works, sometimes does not
-Sometimes the GPU will not have correct drivers inside Windows, even when yesterday was working just fine; Windows may install them.
-
-Sometimes the QEMU command will just fail and the command continues and start X again.
-
-Sometimes the QEMU command does not exit after shutting down the VM.
+### MacOS does not like USB hubs, therefore anything connected to a hub will be ignored.
 
 ### Windows version
 Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have heard that the 1803 version comes with a Spectre patch and the performance is bad](https://www.reddit.com/r/VFIO/comments/97unx4/passmark_lousy_2d_graphics_performance_on_windows/). The Spectre patch can be disabled.
