@@ -13,20 +13,23 @@
 7. [Known problems](#known-problems)
 8. [TODO](#todo)
 
+## Last Update
+2018/10/20
+
 ## What this does
 In one command it kills X, frees the GPU from drivers and console, detaches the GPU from the host, starts the VM with the GPU, waits until the VM is off, reattaches the GPU to the host and starts lightdm.
 
 ## What you need
 * An IOMMU enabled motherboard. Check your motherboard manual for an option in BIOS to enable IOMMU.
 * CPU support for AMD-v/VT-x and AMD-Vi/VT-d (AMD/Intel).
-* Virtualization support enabled on BIOS; check your motherboard manual if you need help.
+* Virtualization support enabled on BIOS. Check your motherboard manual if you need help.
 * One GPU that supports UEFI and its BIOS. All GPUs from 2012 and later should support this, some may have issues. If the GPU does not support UEFI you may be able to make it work, but you won't see anything in the screen until the drivers inside Windows kick in.
 * QEMU, OVMF UEFI and VIRTIO drivers for Windows. [If you need to install, refer to the Install guide](Install.md)
-* [Optional] HDD only for Windows
+* [Optional] An hard drive only for Windows.
 * [Recommended] Another computer to login remotely with `ssh` for convenience, at least until you have everything working.
 
 ## Submit your own configuration
-[Create a pull merge](https://gitlab.com/YuriAlek/vfio/merge_requests/new) with [a file explaining how you got it working](Hardware configurations/README.md)
+[Create a pull merge](https://gitlab.com/YuriAlek/vfio/merge_requests/new) with [a file explaining how you got it working](Hardware configurations/README.md).
 
 ## My system
 ```
@@ -42,14 +45,14 @@ In one command it kills X, frees the GPU from drivers and console, detaches the 
 
                                                 [Software]
                                         Linux Distro: ArchLinux
-                                        Linux Kernel: 4.17.14 vanilla
+                                        Linux Kernel: 4.17.14
                                        Nvidia divers: 396.51-1
                                         QEMU version: 2.12.1-1
                                         OVMF version: r24021
 
                                                  [Guests]
-                                             Windows: Windows 10 Pro 1709 x64
-                                               MacOS: MacOS High Sierra 10.13.3
+                                           Windows 10 Pro 1709 x64
+                                          MacOS High Sierra 10.13.3
 ```  
 
 ## vBIOS
@@ -119,6 +122,7 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ```
 
 6. Edit the config in `scripts/config.sh` to convenience. If you use systemd to start the VM you have to edit `EnvironmentFile` in `qemu@.service` to point to your config file. Variables you may have to edit:
+
   1. PCI devices. `IOMMU_GPU`; `IOMMU_USB`.
   2. User.
   3. Location of HDD/IMG, ISO, vBIOS and OVMF image.
@@ -135,6 +139,7 @@ $ qemu-img create -f raw /path/to/image/windows.raw 60G
 ```
 
 8. When installing Windows, in the section `Where do you want to install Windows?` there will be no hard drives to install to; to fix it:
+
   1. Load driver
   2. Browse
   3. CD Drive (E:) virtio-win-0.1.1
@@ -192,17 +197,17 @@ Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have h
 
 ## TODO
 - [x] Unbind GPU without `virsh`.
-- [x] Update macos script.
 - [x] Run QEMU as user.
 - [x] Try if is necessary to edit `/etc/mkinitcpio.conf`. No need to load the kernel modules at boot.
 - [x] Extract the vBIOS in Linux.
 - [x] Install guide.
-- [ ] Network.
+- [x] Fix the race condition.
+- [ ] Network. [I am too lazy, check this](https://yurialek.gitlab.io/gitbook/docs/qemu/network.html). I will add it to the scripts at some point.
+- [ ] Update macos script.
 - [ ] IOMMU guide.
 - [ ] Audio.
 - [ ] Troubleshooting guide.
 - [ ] How to edit the `windows.sh` script.
-- [ ] Fix the race condition.
 - [ ] Create scripts for install and use (Without DVD images).
 - [ ] Improve the script with multiple options for HDD/IMG; network; PCI devices, etc.
 - [ ] ACS Patch (Does not work for me).

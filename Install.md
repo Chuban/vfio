@@ -6,7 +6,7 @@
 ```
 
 ### Enabling IOMMU support on boot
-For `systemd-boot` edit `/boot/loader/entries/arch.conf` and add `intel_iommu=on` **OR** `amd_iommu=on` and `iommu=pt`.
+#### For `systemd-boot` edit `/boot/loader/entries/arch.conf` and add `intel_iommu=on` **OR** `amd_iommu=on` and `iommu=pt`.
 ```
 # AMD
 options root=/dev/sda2 amd_iommu=on iommu=pt
@@ -15,8 +15,8 @@ options root=/dev/sda2 amd_iommu=on iommu=pt
 options root=/dev/sda2 intel_iommu=on iommu=pt
 ```
 Reboot.
-----
-For `GRUB` edit `/etc/default/grub` and append your kernel options to the `GRUB_CMDLINE_LINUX_DEFAULT`.
+
+#### For `GRUB` edit `/etc/default/grub` and append your kernel options, `intel_iommu=on` **OR** `amd_iommu=on` and `iommu=pt`, to the `GRUB_CMDLINE_LINUX_DEFAULT`.
 ```
 # AMD
 GRUB_CMDLINE_LINUX_DEFAULT="amd_iommu=on iommu=pt"
@@ -29,10 +29,10 @@ And then automatically re-generate the grub.cfg file with:
 # grub-mkconfig -o /boot/grub/grub.cfg
 ```
 Reboot.
-----
-After reboot IOMMU should be working
+
+After reboot IOMMU should be working:
 ```
-[yu@ryzen ~]$ dmesg | grep -e DMAR -e IOMMU
+$ dmesg | grep -e DMAR -e IOMMU
 --------------------------------------------
 [    0.492684] AMD-Vi: IOMMU performance counters supported
 [    0.494370] AMD-Vi: Found IOMMU at 0000:00:00.2 cap 0x40

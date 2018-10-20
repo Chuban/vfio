@@ -38,7 +38,7 @@ Ryzen 5 2600 - GTX 770 - @YuriAlek.md
 ### How I did it
 For extracting the `vBIOS` I used the 1st method in Linux and edited it.
 
-You can add anything that you consider useful like the step needed in your distro for installing everything. The more information, and solutions, the better.
+You can add anything that you consider useful like the steps needed in your distro for installing everything or a link to your script. The more information, and solutions, the better.
 
 ### Files to modify
 #### `scripts/windows.sh`
