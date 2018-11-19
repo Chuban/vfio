@@ -37,5 +37,7 @@ CORES=12
 # To run QEMU as user you need to allow more RAM to be locked by an user.
 ULIMIT=$(ulimit -a | grep "max locked memory" | awk '{print $6}')
 
-# Variable used to change the Frame Buffer resolution. Not needed.
-RES="1920 1080"
+## Network stuff
+TAP_INTERFACE=tap0
+DNSMASQ_CONF=dnsmasq.conf
+SMB_CONF=smb.conf
