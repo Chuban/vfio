@@ -1,7 +1,7 @@
 # User.
 USER=yu
 
-# Path to VBIOS, IMG, Windows ISO, Virtio iso, Clover, OVMF, ...
+# Path to VBIOS, IMG, Mac OS ISO, Virtio iso, Clover, OVMF, ...
 IMAGES=/home/$USER/vm
 
 # IOMMU groups for passed devices.
@@ -25,18 +25,23 @@ usbbusid="0000:07:00.3"
 # Images needed for QEMU.
 VBIOS=$IMAGES/GK104_80.04.C3.00.0F-MODED.rom
 IMG=$IMAGES/mac-hs.raw,id=disk,format=raw,if=none
+IMG_MOJAVE=/mnt/wd/vm/hdd/macos-mojave.raw
 CLOVER=$IMAGES/Clover-1080.qcow2
+CLOVER_MOJAVE=/mnt/wd/vm/macos/clover-mojave.qcow2
 ISO=$IMAGES/HighSierra-10.13.6-qemu.iso
 OVMF=$IMAGES/OSX-KVM/OVMF_CODE.fd
 OVMF_VARS=$IMAGES/OSX-KVM/OVMF_VARS.fd
 
 # QEMU options
 MY_OPTIONS="+aes,+xsave,+avx,+xsaveopt,avx2,+smep"
+MOJAVE_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+avx,+xsaveopt,avx2,+smep,check"
 RAM=12G
 CORES=4
 
 # To run QEMU as user you need to allow more RAM to be locked by an user.
 ULIMIT=$(ulimit -a | grep "max locked memory" | awk '{print $6}')
 
-# Variable used to change the Frame Buffer resolution. Not needed.
-RES="1920 1080"
+## Network stuff
+TAP_INTERFACE=tap0
+DNSMASQ_CONF=dnsmasq.conf
+SMB_CONF=smb.conf

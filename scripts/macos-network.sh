@@ -18,7 +18,7 @@
 [[ "$EUID" -ne 0 ]] && echo "Please run as root" && exit 1
 
 ## Load the config file.
-source config
+source config-macos
 
 ## Memory lock limit.
 ## By default, at least in Arch, a user can not lock so much memory, so you have to allow it plus 10 just to be sure.
@@ -152,21 +152,56 @@ echo $usbbusid > /sys/bus/pci/drivers/vfio-pci/bind
 echo $usbid > /sys/bus/pci/drivers/vfio-pci/remove_id
 
 ## QEMU (VM) command
+#qemu-system-x86_64 -runas $USER -enable-kvm \
+#    -nographic -vga none -parallel none -serial none \
+#    -m $RAM \
+#    -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MY_OPTIONS\
+#    -machine pc-q35-2.9 \
+#    -smp $CORES,cores=$CORES \
+#    -device vfio-pci,host=$IOMMU_GPU,multifunction=on,x-vga=on,romfile=$VBIOS \
+#    -device vfio-pci,host=$IOMMU_GPU_AUDIO \
+#    -device vfio-pci,host=$IOMMU_USB \
+#    -usb -device usb-kbd -device usb-tablet \
+#    -device nec-usb-xhci,id=xhci \
+#    -device virtio-net-pci,netdev=net0 \
+#    -netdev tap,id=net0,ifname=$TAP_INTERFACE,script=no,downscript=no,vhost=on \
+#    -device #isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerI#nc" \
+#	  -drive if=pflash,format=raw,readonly,file=$OVMF \
+#    -drive if=pflash,format=raw,file=$OVMF_VARS \
+#	  -smbios type=2 \
+#    -device ide-drive,bus=ide.2,drive=Clover \
+#	  -drive id=Clover,if=none,snapshot=on,format=qcow2,file=$CLOVER \
+#	  -device ide-drive,bus=ide.1,drive=MacHDD \
+#	  -drive id=MacHDD,if=none,file=$IMG,format=raw > /dev/null 2>&1 &
+
+
 qemu-system-x86_64 -runas $USER -enable-kvm \
-    -nographic -vga none -parallel none -serial none \
-    -m $RAM \
-    -cpu host,kvm=off,hv_relaxed,hv_spinlocks=0x1fff,hv_time,hv_vapic,hv_vendor_id=0xDEADBEEFFF \
-    -rtc clock=host,base=localtime \
-    -smp $CORES,sockets=1,cores=$(($CORES/2)),threads=2 \
-    -device vfio-pci,host=$IOMMU_GPU,multifunction=on,x-vga=on,romfile=$VBIOS \
-    -device vfio-pci,host=$IOMMU_GPU_AUDIO \
-    -device vfio-pci,host=$IOMMU_USB \
-    -device virtio-net-pci,netdev=net0 \
-    -netdev tap,id=net0,ifname=$TAP_INTERFACE,script=no,downscript=no,vhost=on \
-    -drive if=pflash,format=raw,readonly,file=$OVMF \
-    -device virtio-scsi-pci,id=scsi0 \
-    -device scsi-hd,bus=scsi0.0,drive=rootfs \
-    -drive id=rootfs,file=$IMG,media=disk,format=raw,if=none > /dev/null 2>&1 &
+  -nographic -vga none -parallel none -serial none \
+  -m $RAM \
+  -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MOJAVE_OPTIONS\
+  -machine pc-q35-2.11 \
+  -smp $CORES,sockets=1,cores=$(($CORES/2)),threads=2 \
+  -device vfio-pci,host=$IOMMU_GPU,multifunction=on,x-vga=on,romfile=$VBIOS \
+  -device vfio-pci,host=$IOMMU_GPU_AUDIO \
+  -device vfio-pci,host=$IOMMU_USB \
+  -usb -device usb-kbd -device usb-tablet \
+  -device nec-usb-xhci,id=xhci \
+  -netdev tap,id=net0,ifname=$TAP_INTERFACE,script=no,downscript=no \
+  -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
+  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+  -drive if=pflash,format=raw,readonly,file=$OVMF \
+  -drive if=pflash,format=raw,file=$OVMF_VARS \
+  -smbios type=2 \
+  -device ide-drive,bus=ide.2,drive=Clover \
+  -drive id=Clover,if=none,snapshot=on,format=qcow2,file=$CLOVER_MOJAVE \
+  -device ide-drive,bus=ide.1,drive=MacHDD \
+  -drive id=MacHDD,if=none,file=$IMG_MOJAVE,format=raw,id=disk > /dev/null 2>&1 &
+
+## Network
+## virtio-net-pci does not work, obviously
+## e1000 does not work
+## rtl8139 does not work
+## e1000-82545em 
 
 ## Wait for QEMU to finish before continuing
 wait
