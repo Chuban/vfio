@@ -1,41 +1,61 @@
-# User.
-USER=yu
+## User
+VM_USER=
 
-# Path to VBIOS, IMG, Windows ISO, Virtio iso, ...
-IMAGES=/home/$USER/vm
+## For extracting the VBIOS
+VBIOS_EXTRACT_PATH=/root/VBIOS.rom
+NVFLASH=/root/nvflash_linux
+extract_videobusid="0000:"
 
-# IOMMU groups for passed devices.
-IOMMU_GPU=06:00.0
-IOMMU_GPU_AUDIO=06:00.1
-IOMMU_USB=07:00.3
+## IOMMU groups
+IOMMU_GPU=""
+IOMMU_GPU_AUDIO=""
 
-# Virsh devices, only needed if you use virsh.
-VIRSH_GPU=pci_0000_06_00_0
-VIRSH_GPU_AUDIO=pci_0000_06_00_1
-VIRSH_USB=pci_0000_07_00_3
+## Virsh devices
+VIRSH_GPU=pci_0000_
+VIRSH_GPU_AUDIO=pci_0000_
 
-# PCI BUS ID for binding/unbinding devices.
-videoid="10de 1184"
-audioid="10de 0e0a"
-usbid="1022 145f"
-videobusid="0000:06:00.0"
-audiobusid="0000:06:00.1"
-usbbusid="0000:07:00.3"
+# PCI BUS ID
+videoid=""
+audioid=""
+videobusid="0000:$IOMMU_GPU"
+audiobusid="0000:$IOMMU_GPU_AUDIO"
 
-# Images needed for QEMU.
-VBIOS=$IMAGES/GK104_80.04.C3.00.0F-MODED.rom
-IMG=$IMAGES/windows.raw
-VIRTIO=$IMAGES/virtio.iso
-ISO=$IMAGES/win10.iso
-HDD=/dev/sdc
+## QEMU options
+RAM=8G
+CORES=8
+MACOS_RAM=8G
+MACOS_CORES=4
+
+## Network
+TAP_INTERFACE=tap0
+TAP_IP="10.10.10.1/24"
+DNSMASQ_CONF="${BASH_SOURCE%/*}/dnsmasq.conf"
+SMB_CONF="${BASH_SOURCE%/*}/smb.conf"
+
+## Log file
+LOG=/home/$VM_USER/qemu_log.txt
+
+## Local path for storage
+IMAGES=/home/$VM_USER/
+
+## Windows and MacOS
+VBIOS=$IMAGES/VBIOS.rom
 OVMF=/usr/share/ovmf/x64/OVMF_CODE.fd
+OVMF_VARS=/usr/share/ovmf/x64/OVMF_VARS.fd
 
-# QEMU options
-RAM=12G
-CORES=12
+## Windows
+VIRTIO=$IMAGES/virtio.iso
+WINDOWS_ISO=$IMAGES/win10.iso
+WINDOWS_IMG=$IMAGES/windows.raw
 
-# To run QEMU as user you need to allow more RAM to be locked by an user.
+## MacOS
+MACOS_ISO=$IMAGES/mojave.iso
+MACOS_IMG=$IMAGES/mojave.raw
+MACOS_CLOVER=$IMAGES/clover.qcow2
+MACOS_OVMF=$IMAGES/MACOS_OVMF_CODE.fd
+MACOS_OVMF_VARS=$IMAGES/MACOS_OVMF_VARS.fd
+MACOS_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+avx,+xsaveopt,avx2,+smep,check"
+
+## Ulimit
 ULIMIT=$(ulimit -a | grep "max locked memory" | awk '{print $6}')
-
-# Variable used to change the Frame Buffer resolution. Not needed.
-RES="1920 1080"
+ULIMIT_TARGET=$(( $(echo $RAM | tr -d 'G')*1048576+100000 ))
