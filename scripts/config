@@ -52,6 +52,8 @@ WINDOWS_IMG=$IMAGES/windows.raw
 MACOS_ISO=$IMAGES/mojave.iso
 MACOS_IMG=$IMAGES/mojave.raw
 MACOS_CLOVER=$IMAGES/clover.qcow2
+MACOS_OVMF=$IMAGES/MACOS_OVMF_CODE.fd
+MACOS_OVMF_VARS=$IMAGES/MACOS_OVMF_VARS.fd
 MACOS_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+avx,+xsaveopt,avx2,+smep,check"
 
 ## Ulimit

@@ -51,6 +51,7 @@ source "${BASH_SOURCE%/*}/config"
 
 ## Kill the Display Manager
 systemctl stop lightdm
+sleep 1
 
 ## Remove the framebuffer and console
 echo 0 > /sys/class/vtconsole/vtcon0/bind
@@ -64,8 +65,6 @@ modprobe -r nvidia
 modprobe -r snd_hda_intel
 
 ## Load vfio
-modprobe vfio
-modprobe vfio_iommu_type1
 modprobe vfio-pci
 
 ## Detach the GPU
@@ -97,8 +96,8 @@ qemu-system-x86_64 -runas $VM_USER -enable-kvm \
   -netdev tap,id=net0,ifname=$TAP_INTERFACE,script=no,downscript=no \
   -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
-  -drive if=pflash,format=raw,readonly,file=$OVMF \
-  -drive if=pflash,format=raw,file=$OVMF_VARS \
+  -drive if=pflash,format=raw,readonly,file=$MACOS_OVMF \
+  -drive if=pflash,format=raw,file=$MACOS_OVMF_VARS \
   -smbios type=2 \
   -device ide-drive,bus=ide.2,drive=Clover \
   -drive id=Clover,if=none,snapshot=on,format=qcow2,file=$MACOS_CLOVER \

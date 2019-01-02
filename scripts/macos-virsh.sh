@@ -7,13 +7,14 @@
 source "${BASH_SOURCE%/*}/config"
 
 ## Check libvirtd
-[[ $(systemctl status libvirtd | grep running) ]] || systemctl start libvirtd && LIBVIRTD=STOPPED
+[[ $(systemctl status libvirtd | grep running) ]] || systemctl start libvirtd && sleep 1 && LIBVIRTD=STOPPED
 
 ## Memory lock limit
 [[ $ULIMIT != $ULIMIT_TARGET ]] && ulimit -l $ULIMIT_TARGET
 
 ## Kill the Display Manager
 systemctl stop lightdm
+sleep 1
 
 ## Kill the console
 echo 0 > /sys/class/vtconsole/vtcon0/bind
@@ -21,12 +22,10 @@ echo 0 > /sys/class/vtconsole/vtcon1/bind
 echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/unbind
 
 ## Detach the GPU
-virsh nodedev-detach $VIRSH_GPU
-virsh nodedev-detach $VIRSH_GPU_AUDIO
+virsh nodedev-detach $VIRSH_GPU > /dev/null 2>&1
+virsh nodedev-detach $VIRSH_GPU_AUDIO > /dev/null 2>&1
 
 ## Load vfio
-modprobe vfio
-modprobe vfio_iommu_type1
 modprobe vfio-pci
 
 ## QEMU (VM) command
@@ -43,8 +42,8 @@ qemu-system-x86_64 -runas $VM_USER -enable-kvm \
   -netdev user,id=net0 \
   -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
-  -drive if=pflash,format=raw,readonly,file=$OVMF \
-  -drive if=pflash,format=raw,file=$OVMF_VARS \
+  -drive if=pflash,format=raw,readonly,file=$MACOS_OVMF \
+  -drive if=pflash,format=raw,file=$MACOS_OVMF_VARS \
   -smbios type=2 \
   -device ide-drive,bus=ide.2,drive=Clover \
   -drive id=Clover,if=none,snapshot=on,format=qcow2,file=$MACOS_CLOVER \
@@ -62,13 +61,13 @@ modprobe -r vfio_iommu_type1
 modprobe -r vfio
 
 ## Reattach the GPU
-virsh nodedev-reattach $VIRSH_GPU_AUDIO
-virsh nodedev-reattach $VIRSH_GPU
+virsh nodedev-reattach $VIRSH_GPU_AUDIO > /dev/null 2>&1
+virsh nodedev-reattach $VIRSH_GPU > /dev/null 2>&1
 
-## Reload the framebuffer
-echo "efi-framebuffer.0" > /sys/bus/platform/drivers/efi-framebuffer/bind
+## Reload the framebuffer and console
 echo 1 > /sys/class/vtconsole/vtcon0/bind
-echo 1 > /sys/class/vtconsole/vtcon1/bind
+nvidia-xconfig --query-gpu-info > /dev/null 2>&1
+echo "efi-framebuffer.0" > /sys/bus/platform/drivers/efi-framebuffer/bind
 
 ## Reload the Display Manager
 systemctl start lightdm

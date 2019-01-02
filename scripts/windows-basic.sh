@@ -11,21 +11,20 @@ source "${BASH_SOURCE%/*}/config"
 
 ## Kill the Display Manager
 systemctl stop lightdm
+sleep 1
 
 ## Remove the framebuffer and console
 echo 0 > /sys/class/vtconsole/vtcon0/bind
 echo 0 > /sys/class/vtconsole/vtcon1/bind
 echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/unbind
 
-# Unload the Kernel Modules that use the GPU
+## Unload the nvidia drivers
 modprobe -r nvidia_drm
 modprobe -r nvidia_modeset
 modprobe -r nvidia
 modprobe -r snd_hda_intel
 
-# Load the kernel module
-modprobe vfio
-modprobe vfio_iommu_type1
+## Load vfio
 modprobe vfio-pci
 
 ## Detach the GPU

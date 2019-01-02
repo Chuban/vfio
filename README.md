@@ -1,7 +1,7 @@
 # Single GPU passthrough
 
 ## Last Update
-2018/12/30
+2019/01/02
 
 ## Table of Contents
 1. [Start here](#start-here)
@@ -12,9 +12,9 @@
 1. [TODO](#todo)
 
 ## Start here
-- [How to use the script for Windows](https://gitlab.com/YuriAlek/vfio/wikis/Use/#windows).
-- [How to use the script for MacOs](https://gitlab.com/YuriAlek/vfio/wikis/Use/#macos).
-- [How to use the script for Linux](https://gitlab.com/YuriAlek/vfio/wikis/Use/#linux).
+- [How to use the script for Windows VMs](https://gitlab.com/YuriAlek/vfio/wikis/Use/#windows).
+- [How to use the script for MacOS VMs](https://gitlab.com/YuriAlek/vfio/wikis/Use/#macos).
+- [How to use the script for Linux VMs](https://gitlab.com/YuriAlek/vfio/wikis/Use/#linux).
 
 ## What this is
 A series of scripts that allows you to do GPU passthrough with only one GPU in the system by detaching the GPU from the host and passing it to the guest, usually a Windows VM.
@@ -22,7 +22,7 @@ A series of scripts that allows you to do GPU passthrough with only one GPU in t
 However, you may not use this method as it is tedious and having two GPUs allows you to do things like dual monitors (one running Linux and the other running Windows) or [LookingGlass][8].
 
 ## Wiki
-[Check the wiki for more information and guides on how to make it work](https://gitlab.com/YuriAlek/vfio/wikis/Home).
+[Check the wiki for more information and guides on how to make everything work](https://gitlab.com/YuriAlek/vfio/wikis/Home).
 
 ## Branches
 I keep more than one branch for multiple purposes. [There is a personal branch][1] where I have my actual configuration; [a testing branch][2] where I push changes while I am testing new things, it is **NOT stable**; and [a testing-auto branch][3] where I **try** to make everything work automatically.
@@ -36,17 +36,21 @@ MacOS High Sierra does not like USB hubs, therefore anything connected to a hub 
 
 Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have read that the 1803 version comes with a Spectre patch and the performance is bad][4]. The Spectre patch can be disabled.
 
+`windows-basic.sh` and `windows-virsh.sh` reports no connection but it works (except pings).
+
 ## TODO
 - [ ] Audio.
+- [ ] `smb.conf` and `dnsmasq.conf` using the `config` file.
 - [ ] CPU pinning.
 - [ ] Performance tunning for QEMU.
-- [ ] [Automation][3]
+- [ ] Find a way to restore the GPU without `nvidia-xconfig --query-gpu-info`.
+- [ ] [Automation][3].
 - [ ] Don't kill X server, [shifter and xpra may be the solution][5]. Also [uswsusp (userspace software suspend)][6]. [Source][7]
 
 <!-- Links -->
-[1]: /tree/personal "Personal branch"
-[2]: /tree/testing "Testing branch"
-[3]: /tree/testing-auto "Testing-auto branch"
+[1]: https://gitlab.com/YuriAlek/vfio/tree/personal "Personal branch"
+[2]: https://gitlab.com/YuriAlek/vfio/tree/testing "Testing branch"
+[3]: https://gitlab.com/YuriAlek/vfio/tree/testing-auto "Testing-auto branch"
 [4]: https://www.reddit.com/r/VFIO/comments/97unx4/passmark_lousy_2d_graphics_performance_on_windows/
 [5]: https://www.linuxquestions.org/questions/linux-desktop-74/move-application-between-desktops-736982/#post4161705
 [6]: https://wiki.archlinux.org/index.php/Uswsusp "uswsusp"
