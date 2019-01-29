@@ -1,14 +1,14 @@
 ## User
 VM_USER=
 
-## For extracting the VBIOS
-VBIOS_EXTRACT_PATH=/root/VBIOS.rom
-NVFLASH=/root/nvflash_linux
-extract_videobusid="0000:"
-
 ## IOMMU groups
 IOMMU_GPU=""
 IOMMU_GPU_AUDIO=""
+
+## For extracting the VBIOS
+VBIOS_EXTRACT_PATH=/root/VBIOS.rom
+NVFLASH=/root/nvflash_linux
+extract_videobusid="0000:$IOMMU_GPU"
 
 ## Virsh devices
 VIRSH_GPU=pci_0000_
@@ -38,19 +38,19 @@ LOG=/home/$VM_USER/qemu_log.txt
 ## Local path for storage
 IMAGES=/home/$VM_USER/
 
-## Windows and MacOS
+## VBIOS
 VBIOS=$IMAGES/VBIOS.rom
-OVMF=/usr/share/ovmf/x64/OVMF_CODE.fd
-OVMF_VARS=/usr/share/ovmf/x64/OVMF_VARS.fd
 
 ## Windows
 VIRTIO=$IMAGES/virtio.iso
 WINDOWS_ISO=$IMAGES/win10.iso
-WINDOWS_IMG=$IMAGES/windows.raw
+WINDOWS_IMG=$IMAGES/windows.qcow2
+OVMF=/usr/share/ovmf/x64/OVMF_CODE.fd
+OVMF_VARS=/usr/share/ovmf/x64/OVMF_VARS.fd
 
 ## MacOS
 MACOS_ISO=$IMAGES/mojave.iso
-MACOS_IMG=$IMAGES/mojave.raw
+MACOS_IMG=$IMAGES/mojave.qcow2
 MACOS_CLOVER=$IMAGES/clover.qcow2
 MACOS_OVMF=$IMAGES/MACOS_OVMF_CODE.fd
 MACOS_OVMF_VARS=$IMAGES/MACOS_OVMF_VARS.fd

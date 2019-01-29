@@ -97,7 +97,7 @@ qemu-system-x86_64 -runas $VM_USER -enable-kvm \
   -device ide-drive,bus=ide.0,drive=ISO \
   -drive id=ISO,if=none,snapshot=on,media=cdrom,file=$MACOS_ISO \
   -device ide-drive,bus=ide.1,drive=HDD \
-  -drive id=HDD,file=$MACOS_IMG,media=disk,format=raw,if=none >> $LOG 2>&1 &
+  -drive id=HDD,file=$MACOS_IMG,media=disk,format=qcow2,if=none >> $LOG 2>&1 &
 
 ## Wait for QEMU
 wait

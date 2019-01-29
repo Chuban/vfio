@@ -91,7 +91,7 @@ qemu-system-x86_64 -runas $VM_USER -enable-kvm \
   -device ide-cd,bus=ide.1,drive=cd2 \
   -device virtio-scsi-pci,id=scsi0 \
   -device scsi-hd,bus=scsi0.0,drive=rootfs \
-  -drive id=rootfs,file=$WINDOWS_IMG,media=disk,format=raw,if=none >> $LOG 2>&1 &
+  -drive id=rootfs,file=$WINDOWS_IMG,media=disk,format=qcow2,if=none >> $LOG 2>&1 &
 
 ## Wait for QEMU
 wait
