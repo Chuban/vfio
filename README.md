@@ -28,9 +28,7 @@ However, you may not use this method as it is tedious and having two GPUs allows
 I keep more than one branch for multiple purposes. [There is a personal branch][1] where I have my actual configuration; [a testing branch][2] where I push changes while I am testing new things, it is **NOT stable**; and [a testing-auto branch][3] where I **try** to make everything work automatically.
 
 ## Known problems
-Audio is not supported, yet. I use an external USB DAC.
-
-Performance is not important to me at this moment. There is a lot of things that you can do to get better performance.
+Audio is not configured on this guide, yet. I use an external USB DAC.
 
 MacOS High Sierra does not like USB hubs, therefore anything connected to a hub won't work. Mojave works fine with hubs.
 
