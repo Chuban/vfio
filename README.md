@@ -1,15 +1,15 @@
 # Single GPU passthrough
 
 ## Last Update
-2019/01/02
+2019/03/22
 
 ## Table of Contents
-1. [Start here](#start-here)
-1. [What is this](#what-this-is)
-1. [Wiki](#wiki)
-1. [Branches](#branches)
-1. [Known problems](#known-problems)
-1. [TODO](#todo)
+- [Start here](#start-here)
+- [What is this](#what-this-is)
+- [Wiki](#wiki)
+- [Branches](#branches)
+- [Known problems](#known-problems)
+- [TODO](#todo)
 
 ## Start here
 - [How to use the script for Windows VMs](https://gitlab.com/YuriAlek/vfio/wikis/Use/#windows).
@@ -41,8 +41,6 @@ Windows 10 Pro 1709 works for me, but 1803 does not (may be the UEFI). [I have r
 ## TODO
 - [ ] Audio.
 - [ ] `smb.conf` and `dnsmasq.conf` using the `config` file.
-- [ ] CPU pinning.
-- [ ] Performance tunning for QEMU.
 - [ ] Find a way to restore the GPU without `nvidia-xconfig --query-gpu-info`.
 - [ ] [Automation][3].
 - [ ] Don't kill X server, [shifter and xpra may be the solution][5]. Also [uswsusp (userspace software suspend)][6]. [Source][7]

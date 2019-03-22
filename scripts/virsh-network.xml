@@ -1,0 +1,13 @@
+<network ipv6='yes'>
+  <name>virt1</name>
+  <uuid>046a1f8f-e46c-4517-8f8e-6c793a8b57a2</uuid>
+  <bridge name='virbr1' stp='on' delay='0'/>
+  <mac address='52:54:00:db:9d:9b'/>
+  <domain name='virt1'/>
+  <ip address='10.10.10.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='10.10.10.128' end='10.10.10.254'/>
+    </dhcp>
+  </ip>
+</network>
+
