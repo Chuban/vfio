@@ -54,8 +54,8 @@ if [[ $1 == "win10" ]]; then
 		modprobe vfio-pci
 
 		## Start the network
-		if [[ $(virsh net-list --all | grep $VIRTNET | awk '{print $2}') != "active" ]]; then
-			virsh net-start $VIRTNET
+		if [[ $(virsh net-list --all | grep $VIRTNAME | awk '{print $2}') != "active" ]]; then
+			virsh net-start $VIRTNAME
 		fi
 
 	fi
