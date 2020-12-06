@@ -1,9 +1,9 @@
 ## User
-VM_USER=
+VM_USER=adam
 
 ## IOMMU groups
-IOMMU_GPU=""
-IOMMU_GPU_AUDIO=""
+IOMMU_GPU="01:00.0"
+IOMMU_GPU_AUDIO="01:00.1"
 
 ## For extracting the VBIOS
 VBIOS_EXTRACT_PATH=/root/VBIOS.rom
@@ -11,18 +11,18 @@ NVFLASH=/root/nvflash_linux
 extract_videobusid="0000:$IOMMU_GPU"
 
 ## Virsh devices
-VIRSH_GPU=pci_0000_
-VIRSH_GPU_AUDIO=pci_0000_
+VIRSH_GPU=pci_0000_01_00_0
+VIRSH_GPU_AUDIO=pci_0000_01_00_1
 
 # PCI BUS ID
-videoid=""
-audioid=""
+videoid="10de:13c2"
+audioid="10de:0fbb"
 videobusid="0000:$IOMMU_GPU"
 audiobusid="0000:$IOMMU_GPU_AUDIO"
 
 ## QEMU options
 RAM=8G
-CORES=8
+CORES=4
 MACOS_RAM=8G
 MACOS_CORES=4
 
@@ -36,17 +36,17 @@ SMB_CONF="${BASH_SOURCE%/*}/smb.conf"
 LOG=/home/$VM_USER/qemu_log.txt
 
 ## Local path for storage
-IMAGES=/home/$VM_USER/
+IMAGES=/home/$VM_USER/Images
 
 ## VBIOS
-VBIOS=$IMAGES/VBIOS.rom
+VBIOS=/root/VBIOS.rom
 
 ## Windows
-VIRTIO=$IMAGES/virtio.iso
-WINDOWS_ISO=$IMAGES/win10.iso
+VIRTIO=$IMAGES/virtio-win-0.1.189.iso
+WINDOWS_ISO=$IMAGES/Win10_2004_English_x64.iso
 WINDOWS_IMG=$IMAGES/windows.qcow2
-OVMF=/usr/share/ovmf/x64/OVMF_CODE.fd
-OVMF_VARS=/usr/share/ovmf/x64/OVMF_VARS.fd
+OVMF=/usr/share/OVMF/OVMF_CODE.fd
+OVMF_VARS=/usr/share/OVMF/OVMF_VARS.fd
 
 ## MacOS
 MACOS_ISO=$IMAGES/mojave.iso

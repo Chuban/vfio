@@ -12,9 +12,20 @@ source "${BASH_SOURCE%/*}/config"
 ## Memory lock limit
 [[ $ULIMIT != $ULIMIT_TARGET ]] && ulimit -l $ULIMIT_TARGET
 
+## Stop Folding at Home
+/etc/init.d/FAHClient stop
+
 ## Kill the Display Manager
-systemctl stop lightdm
-sleep 1
+systemctl stop display-manager.service
+killall gdm-x-session
+
+sleep 5
+
+## Unload the nvidia drivers
+modprobe -r nvidia_uvm
+modprobe -r nvidia_drm
+modprobe -r nvidia_modeset
+modprobe -r nvidia
 
 ## Kill the console
 echo 0 > /sys/class/vtconsole/vtcon0/bind
@@ -36,11 +47,14 @@ qemu-system-x86_64 -runas $VM_USER -enable-kvm \
   -cpu host,kvm=off,hv_relaxed,hv_spinlocks=0x1fff,hv_time,hv_vapic,hv_vendor_id=0xDEADBEEFFF \
   -rtc clock=host,base=localtime \
   -smp $CORES,sockets=1,cores=$(( $CORES / 2 )),threads=2 \
+  -object input-linux,id=mouse1,evdev=/dev/input/by-id/usb-Logitech_USB_Laser_Mouse-event-mouse \
+  -object input-linux,id=kbd1,evdev=/dev/input/by-id/usb-Metadot_-_Das_Keyboard_Das_Keyboard-event-kbd,grab_all=on,repeat=on \
   -device vfio-pci,host=$IOMMU_GPU,multifunction=on,x-vga=on,romfile=$VBIOS \
   -device vfio-pci,host=$IOMMU_GPU_AUDIO \
   -device virtio-net-pci,netdev=n1 \
   -netdev user,id=n1 \
   -drive if=pflash,format=raw,readonly,file=$OVMF \
+  -drive if=pflash,format=raw,file=$OVMF_VARS \
   -drive media=cdrom,file=$WINDOWS_ISO,id=cd1,if=none \
   -device ide-cd,bus=ide.1,drive=cd1 \
   -drive media=cdrom,file=$VIRTIO,id=cd2,if=none \
@@ -66,8 +80,16 @@ echo 1 > /sys/class/vtconsole/vtcon0/bind
 nvidia-xconfig --query-gpu-info > /dev/null 2>&1
 echo "efi-framebuffer.0" > /sys/bus/platform/drivers/efi-framebuffer/bind
 
+modprobe nvidia
+modprobe nvidia_modeset
+modprobe nvidia_drm
+modprobe nvidia_uvm
+
 ## Reload the Display Manager
-systemctl start lightdm
+systemctl start display-manager.service
+
+## Restart Folding at Home
+/etc/init.d/FAHClient start
 
 ## If libvirtd was stopped then stop it
 [[ $LIBVIRTD == "STOPPED" ]] && systemctl stop libvirtd
